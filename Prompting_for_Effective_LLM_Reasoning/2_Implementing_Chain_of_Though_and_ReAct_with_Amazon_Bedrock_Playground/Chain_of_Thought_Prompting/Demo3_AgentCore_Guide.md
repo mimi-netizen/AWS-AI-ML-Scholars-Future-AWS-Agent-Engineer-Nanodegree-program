@@ -338,6 +338,8 @@ agentcore launch
 This provisions a serverless AgentCore Runtime and gives you an endpoint
 you can invoke the same way you'd have invoked a prepared Bedrock Agent.
 
+![Screenshot of the AgentCore deployment interface for a Bedrock agent, showing a console-style workflow with deployment labels and endpoint details on a light background.](images/demo3.png)
+
 **Heads-up:** AWS has been actively changing the AgentCore tooling — as of
 mid-2026 there are reports of a newer CDK-based CLI (`@aws/agentcore-cli`)
 starting to replace this starter-toolkit CLI in some docs. If
@@ -349,11 +351,3 @@ regardless of which CLI version is current.
 
 ---
 
-## What you can drop from the original instructions
-
-- Skip the Lambda console entirely (Step 1 of the original doc) — your
-  functions now live in `tools.py` and run in-process.
-- Skip creating action groups (Step 3 of the original doc) — the `@tool`
-  decorator replaces that configuration.
-- Skip **Prepare** — there's no separate build step; running the script
-  *is* the test.
