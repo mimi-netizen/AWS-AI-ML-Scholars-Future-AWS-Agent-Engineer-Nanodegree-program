@@ -75,6 +75,8 @@ aws bedrock list-inference-profiles --region <your-region> --query "inferencePro
 This typically returns something like `us.amazon.nova-pro-v1:0` — use
 whatever it actually prints, not a guessed value.
 
+![AWS CLI terminal output showing the inference profile ID us.amazon.nova-pro-v1:0 returned from the bedrock list-inference-profiles command, confirming successful model availability verification in a Linux terminal environment](images/image.png)
+
 ## Step 3 — Write the three tools
 
 Create `tools.py`, using your actual Lambda logic ported into plain Python
@@ -240,6 +242,8 @@ recommending Trattoria Bella specifically. This is the real test of
 whether the system prompt is doing its job: a weaker prompt will often
 just recommend whichever restaurant came back first from the search
 without checking if it's actually free tonight.
+
+![Terminal output showing agent reasoning log with three tool calls: searching for Italian restaurants, checking availability of two results, and recommending Trattoria Bella. The output displays step-by-step thinking in XML tags and tool execution results in a development environment. A file explorer sidebar shows the restaurant recommendation agent project structure.](images/image1.png)
 
 ### Test more than the one example prompt
 
