@@ -16,9 +16,8 @@
 aws --version
 ```
 
-Output: `<paste here>`
+Output: ![AWS CLI version output in a terminal window. The command aws --version is shown, and the result reads aws-cli/2.36.20 Python/3.14.6 Linux/6.18.3-2-microsoft-standard-WSL x86_64 ubuntu.24. The wider scene is a dark developer terminal with minimal interface elements. The tone is neutral and technical.](image.png)
 
-If not installed: `<document install method used — e.g. package manager, installer link>`
 
 ### 0.2 AWS credentials configured
 
@@ -33,7 +32,7 @@ Verify identity:
 aws sts get-caller-identity
 ```
 
-Output: `<paste — confirms account ID / role, without exposing actual key values>`
+Output: ![Terminal output from the AWS CLI command aws sts get-caller-identity. The command appears in a dark developer terminal and the response is displayed as JSON in a monospace format. The output includes UserId, Account, and Arn fields, with the Account value shown as 72831954873 and the Arn value beginning with arn:aws:sts::72831954873:assumed-role. The wider environment is a minimal dark terminal interface with no extra UI elements. The tone is neutral and technical.](image-1.png)
 
 **Note:** if using a Vocareum-style lab account, session tokens expire — document how long the session lasts and the refresh step, since a mid-project expiry will silently break `aws cloudformation deploy` calls with a credentials error that looks unrelated to the actual template.
 
@@ -43,13 +42,21 @@ Output: `<paste — confirms account ID / role, without exposing actual key valu
 aws configure get region
 ```
 
-Confirm it prints `us-east-1`, or pass `--region us-east-1` explicitly on every command (the walkthrough commands below all do this).
+Confirm it prints `us-east-1`, or pass `--region us-east-1` explicitly on every command.
+
+![Terminal window from the AWS CLI showing the region configuration check. The command aws configure get region is entered twice. The first output is us-west-2 and the second output is us-east-1, with the command prompt displayed above each result in a dark developer terminal. The wider environment is a minimal dark coding workspace with a file explorer and terminal UI visible in the background. The tone is neutral and instructional.](image-2.png)
 
 ### 0.4 Bedrock model access enabled
 
-In the Bedrock console → Model access → confirm Amazon Nova Pro (and any other model used) shows "Access granted" for `us-east-1`. This is a manual console step, not CLI — request access before Step 1 if not already granted, since approval isn't always instant.
+**Console region check:** the AWS Console has its own region selector (top-right), independent of aws configure. Confirm it reads US East (N. Virginia) before doing anything in the Bedrock/Lambda/DynamoDB consoles — a mismatch here means console actions land in the wrong region even after the CLI default is fixed.
 
-![Bedrock model access confirmation](screenshots/00-model-access.png)
+![Amazon Bedrock Model access page in the AWS management console, shown in a dark interface. The left sidebar lists Amazon Bedrock, Discover, Labs, Test, and Infer. The main panel shows the heading Model access and the text Model access page has been retired. The body explains that serverless foundation models are now automatically enabled and that no manual activation is needed. A right-side panel lists regions, with United States, N. Virginia and us-east-1 selected. A note says AWS Marketplace permissions must be configured and that users can access models through the InvokeModel API or Converse. The browser chrome and AWS console header are visible in the wider environment, which is a dark, technical workspace. The tone is neutral and instructional.](image-3.png)
+
+**Model access:** AWS retired the manual Model access page — foundation models (including Amazon Nova Pro) are now auto-enabled account-wide on first invocation, no activation step needed. 
+
+Confirm access works by invoking the model once (Bedrock Playground, us-east-1) rather than checking a settings page.
+
+![Amazon Bedrock Playground page in the AWS Management Console, displayed in a dark navy interface. The left sidebar includes Discover, Labs, Test, and Infer. In the main panel, the model selector shows Nova Pro, the mode is Chat, and the chat window contains the user message Hello, confirm you are working. The assistant response reads Hello! I am here and functioning as expected. How can I assist you today? If you have a question, need information, or require help with a task, feel free to ask! The wider environment is a browser window on a desktop with a dark coding workspace visible behind it. The overall tone is neutral and technical.](image-4.png)
 
 ### 0.5 Python environment and dependencies
 
@@ -60,26 +67,14 @@ source venv/bin/activate      # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+![Dark terminal window in a developer workspace showing the Python virtual environment setup steps. The command python3 --version is entered first, returning Python 3.12.3. Next, python3 -m venv venv is run, followed by source venv/bin/activate, and then pip install -r requirements.txt. The terminal uses a dark theme with blue command text on a black background, while the surrounding workspace remains minimally visible in a neutral coding environment. The overall tone is instructional and technical.](image-5.png)
+
 Verify boto3:
 ```bash
 python -c "import boto3; print(boto3.__version__)"
 ```
 
-Output: `<paste version — should match requirements.txt (1.42.54)>`
-
-### 0.6 Project files present
-
-Confirm these exist in the project root before continuing:
-- [ ] `cloudformation-tool.yaml`
-- [ ] `cloudformation-testing.yaml`
-- [ ] `create_bug_report.py`
-- [ ] `generate-eval-dataset.py`
-- [ ] `flow-tests-template.json`
-- [ ] `online_shop_faq.md`
-- [ ] `requirements.txt`
-
-### Notes / issues encountered
-- _(e.g. credential expiry, missing model access, venv activation issues on Windows vs WSL)_
+Output: ![Terminal window in a dark developer environment showing the boto3 version check. The command python -c import boto3; print(boto3.__version__) is entered in the terminal, and the output line reads 1.42.54 in blue text. The surrounding workspace is minimal and technical, with a dark UI and command prompt visible. The tone is neutral and instructional.](image-6.png)
 
 ---
 
