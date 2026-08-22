@@ -1,0 +1,3746 @@
+Help on method create_harness in module botocore.client:
+
+create_harness(*args, **kwargs) method of botocore.client.BedrockAgentCoreControl instance
+    Operation to create a harness.
+
+
+
+    See also: `AWS API Documentation <https://docs.aws.amazon.com/goto/WebAPI/bedrock-agentcore-control-2023-06-05/CreateHarness>`_
+
+
+    **Request Syntax**
+    ::
+
+      response = client.create_harness(
+          harnessName='string',
+          clientToken='string',
+          executionRoleArn='string',
+          environment={
+              'agentCoreRuntimeEnvironment': {
+                  'lifecycleConfiguration': {
+                      'idleRuntimeSessionTimeout': 123,
+                      'maxLifetime': 123
+                  },
+                  'networkConfiguration': {
+                      'networkMode': 'PUBLIC'|'VPC',
+                      'networkModeConfig': {
+                          'securityGroups': [
+                              'string',
+                          ],
+                          'subnets': [
+                              'string',
+                          ],
+                          'requireServiceS3Endpoint': True|False
+                      }
+                  },
+                  'filesystemConfigurations': [
+                      {
+                          'sessionStorage': {
+                              'mountPath': 'string'
+                          },
+                          's3FilesAccessPoint': {
+                              'accessPointArn': 'string',
+                              'mountPath': 'string'
+                          },
+                          'efsAccessPoint': {
+                              'accessPointArn': 'string',
+                              'mountPath': 'string'
+                          },
+                          'capacityProviderVolume': {
+                              'volumeName': 'string',
+                              'mountPath': 'string'
+                          }
+                      },
+                  ]
+              }
+          },
+          environmentArtifact={
+              'containerConfiguration': {
+                  'containerUri': 'string'
+              }
+          },
+          environmentVariables={
+              'string': 'string'
+          },
+          authorizerConfiguration={
+              'customJWTAuthorizer': {
+                  'discoveryUrl': 'string',
+                  'allowedAudience': [
+                      'string',
+                  ],
+                  'allowedClients': [
+                      'string',
+                  ],
+                  'allowedScopes': [
+                      'string',
+                  ],
+                  'advertisedScopeMapping': {
+                      'string': 'string'
+                  },
+                  'customClaims': [
+                      {
+                          'inboundTokenClaimName': 'string',
+                          'inboundTokenClaimValueType': 'STRING'|'STRING_ARRAY',
+                          'authorizingClaimMatchValue': {
+                              'claimMatchValue': {
+                                  'matchValueString': 'string',
+                                  'matchValueStringList': [
+                                      'string',
+                                  ]
+                              },
+                              'claimMatchOperator': 'EQUALS'|'CONTAINS'|'CONTAINS_ANY'
+                          }
+                      },
+                  ],
+                  'privateEndpoint': {
+                      'selfManagedLatticeResource': {
+                          'resourceConfigurationIdentifier': 'string'
+                      },
+                      'managedVpcResource': {
+                          'vpcIdentifier': 'string',
+                          'subnetIds': [
+                              'string',
+                          ],
+                          'endpointIpAddressType': 'IPV4'|'IPV6',
+                          'securityGroupIds': [
+                              'string',
+                          ],
+                          'tags': {
+                              'string': 'string'
+                          },
+                          'routingDomain': 'string'
+                      }
+                  },
+                  'privateEndpointOverrides': [
+                      {
+                          'domain': 'string',
+                          'privateEndpoint': {
+                              'selfManagedLatticeResource': {
+                                  'resourceConfigurationIdentifier': 'string'
+                              },
+                              'managedVpcResource': {
+                                  'vpcIdentifier': 'string',
+                                  'subnetIds': [
+                                      'string',
+                                  ],
+                                  'endpointIpAddressType': 'IPV4'|'IPV6',
+                                  'securityGroupIds': [
+                                      'string',
+                                  ],
+                                  'tags': {
+                                      'string': 'string'
+                                  },
+                                  'routingDomain': 'string'
+                              }
+                          }
+                      },
+                  ],
+                  'allowedWorkloadConfiguration': {
+                      'hostingEnvironments': [
+                          {
+                              'arn': 'string'
+                          },
+                      ],
+                      'workloadIdentities': [
+                          'string',
+                      ]
+                  }
+              }
+          },
+          model={
+              'bedrockModelConfig': {
+                  'modelId': 'string',
+                  'maxTokens': 123,
+                  'temperature': ...,
+                  'topP': ...,
+                  'apiFormat': 'converse_stream'|'responses'|'chat_completions',
+                  'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+              },
+              'openAiModelConfig': {
+                  'modelId': 'string',
+                  'apiKeyArn': 'string',
+                  'maxTokens': 123,
+                  'temperature': ...,
+                  'topP': ...,
+                  'apiFormat': 'chat_completions'|'responses',
+                  'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+              },
+              'geminiModelConfig': {
+                  'modelId': 'string',
+                  'apiKeyArn': 'string',
+                  'maxTokens': 123,
+                  'temperature': ...,
+                  'topP': ...,
+                  'topK': 123,
+                  'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+              },
+              'liteLlmModelConfig': {
+                  'modelId': 'string',
+                  'apiKeyArn': 'string',
+                  'apiBase': 'string',
+                  'maxTokens': 123,
+                  'temperature': ...,
+                  'topP': ...,
+                  'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+              }
+          },
+          systemPrompt=[
+              {
+                  'text': 'string'
+              },
+          ],
+          tools=[
+              {
+                  'type': 'remote_mcp'|'agentcore_browser'|'agentcore_gateway'|'inline_function'|'agentcore_code_interpreter',
+                  'name': 'string',
+                  'config': {
+                      'remoteMcp': {
+                          'url': 'string',
+                          'headers': {
+                              'string': 'string'
+                          }
+                      },
+                      'agentCoreBrowser': {
+                          'browserArn': 'string'
+                      },
+                      'agentCoreGateway': {
+                          'gatewayArn': 'string',
+                          'outboundAuth': {
+                              'awsIam': {}
+                              ,
+                              'none': {}
+                              ,
+                              'oauth': {
+                                  'providerArn': 'string',
+                                  'scopes': [
+                                      'string',
+                                  ],
+                                  'customParameters': {
+                                      'string': 'string'
+                                  },
+                                  'grantType': 'CLIENT_CREDENTIALS'|'AUTHORIZATION_CODE'|'TOKEN_EXCHANGE',
+                                  'defaultReturnUrl': 'string'
+                              }
+                          }
+                      },
+                      'inlineFunction': {
+                          'description': 'string',
+                          'inputSchema': {...}|[...]|123|123.4|'string'|True|None
+                      },
+                      'agentCoreCodeInterpreter': {
+                          'codeInterpreterArn': 'string'
+                      }
+                  }
+              },
+          ],
+          skills=[
+              {
+                  'path': 'string',
+                  's3': {
+                      'uri': 'string'
+                  },
+                  'git': {
+                      'url': 'string',
+                      'path': 'string',
+                      'auth': {
+                          'credentialArn': 'string',
+                          'username': 'string'
+                      }
+                  },
+                  'awsSkills': {
+                      'paths': [
+                          'string',
+                      ]
+                  }
+              },
+          ],
+          allowedTools=[
+              'string',
+          ],
+          memory={
+              'agentCoreMemoryConfiguration': {
+                  'arn': 'string',
+                  'actorId': 'string',
+                  'messagesCount': 123,
+                  'retrievalConfig': {
+                      'string': {
+                          'topK': 123,
+                          'relevanceScore': ...,
+                          'strategyId': 'string'
+                      }
+                  }
+              },
+              'managedMemoryConfiguration': {
+                  'arn': 'string',
+                  'strategies': [
+                      'SEMANTIC'|'SUMMARIZATION'|'USER_PREFERENCE'|'EPISODIC',
+                  ],
+                  'eventExpiryDuration': 123,
+                  'encryptionKeyArn': 'string'
+              },
+              'disabled': {}
+
+          },
+          truncation={
+              'strategy': 'sliding_window'|'summarization'|'none',
+              'config': {
+                  'slidingWindow': {
+                      'messagesCount': 123
+                  },
+                  'summarization': {
+                      'summaryRatio': ...,
+                      'preserveRecentMessages': 123,
+                      'summarizationSystemPrompt': 'string'
+                  }
+              }
+          },
+          maxIterations=123,
+          maxTokens=123,
+          timeoutSeconds=123,
+          tags={
+              'string': 'string'
+          }
+      )
+
+    :type harnessName: string
+    :param harnessName: **[REQUIRED]**
+
+      The name of the harness. Must start with a letter and contain only alphanumeric characters and underscores.
+
+
+
+
+    :type clientToken: string
+    :param clientToken:
+
+      A unique, case-sensitive identifier to ensure idempotency of the request.
+
+      This field is autopopulated if not provided.
+
+
+    :type executionRoleArn: string
+    :param executionRoleArn: **[REQUIRED]**
+
+      The ARN of the IAM role that the harness assumes when running. This role must have permissions for the services the agent needs to access, such as Amazon Bedrock for model invocation.
+
+
+
+
+    :type environment: dict
+    :param environment:
+
+      The compute environment configuration for the harness, including network and lifecycle settings.
+
+      .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``agentCoreRuntimeEnvironment``.
+
+
+      - **agentCoreRuntimeEnvironment** *(dict) --*
+
+        The AgentCore Runtime environment configuration.
+
+
+
+
+        - **lifecycleConfiguration** *(dict) --*
+
+          LifecycleConfiguration lets you manage the lifecycle of runtime sessions and resources in AgentCore Runtime. This configuration helps optimize resource utilization by automatically cleaning up idle sessions and preventing long-running instances from consuming resources indefinitely.
+
+
+
+
+          - **idleRuntimeSessionTimeout** *(integer) --*
+
+            Timeout in seconds for idle runtime sessions. When a session remains idle for this duration, it will be automatically terminated. Default: 900 seconds (15 minutes).
+
+
+
+
+          - **maxLifetime** *(integer) --*
+
+            Maximum lifetime for the instance in seconds. Once reached, instances will be automatically terminated and replaced. Default: 28800 seconds (8 hours).
+
+
+
+
+
+        - **networkConfiguration** *(dict) --*
+
+          SecurityConfig for the Agent.
+
+
+
+
+          - **networkMode** *(string) --* **[REQUIRED]**
+
+            The network mode for the AgentCore Runtime.
+
+
+
+
+          - **networkModeConfig** *(dict) --*
+
+            The network mode configuration for the AgentCore Runtime.
+
+
+
+
+            - **securityGroups** *(list) --* **[REQUIRED]**
+
+              The security groups associated with the VPC configuration.
+
+
+
+
+              - *(string) --*
+
+
+
+            - **subnets** *(list) --* **[REQUIRED]**
+
+              The subnets associated with the VPC configuration.
+
+
+
+
+              - *(string) --*
+
+
+
+            - **requireServiceS3Endpoint** *(boolean) --*
+
+
+
+              .. note::
+
+
+
+                This field applies only to Agent Runtimes. It is not applicable to Browsers or Code Interpreters.
+
+
+
+
+
+              Controls whether a service-managed Amazon S3 gateway endpoint is provisioned in the VPC network topology for the agent runtime. This gateway is used by Amazon Bedrock AgentCore Runtime to download code and container images during agent startup.
+
+
+
+              Starting May 5, 2026, Amazon Bedrock AgentCore Runtime is gradually rolling out a change to how network isolation is configured for VPC mode agents. Agent runtimes created on or after this rollout will no longer include the service-managed Amazon S3 gateway. Instead, all network access, including to Amazon S3, is governed exclusively by your VPC configuration. This field cannot be set on agent runtimes created after the rollout. Passing this field in an ``UpdateAgentRuntime`` request for these agent runtimes returns a ``ValidationException``.
+
+
+
+              Agent runtimes created before the rollout are not affected and continue to operate with the service-managed Amazon S3 gateway. To enforce full VPC network isolation on these existing agent runtimes, set this field to ``false`` via the ``UpdateAgentRuntime`` API. Before opting out, ensure your VPC provides the Amazon S3 access required for agent startup. If this field is not specified or is set to ``true``, the service-managed Amazon S3 gateway remains provisioned.
+
+
+
+              This field is only supported in the ``UpdateAgentRuntime`` API for pre-rollout agent runtimes. Passing this field in a ``CreateAgentRuntime`` request returns a ``ValidationException``.
+
+
+
+
+
+
+
+
+        - **filesystemConfigurations** *(list) --*
+
+          The filesystem configurations for the runtime environment.
+
+
+
+
+          - *(dict) --*
+
+            Configuration for a filesystem that can be mounted into the AgentCore Runtime.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``sessionStorage``, ``s3FilesAccessPoint``, ``efsAccessPoint``, ``capacityProviderVolume``.
+
+
+            - **sessionStorage** *(dict) --*
+
+              Configuration for session storage. Session storage provides persistent storage that is preserved across AgentCore Runtime session invocations.
+
+
+
+
+              - **mountPath** *(string) --* **[REQUIRED]**
+
+                The mount path for the session storage filesystem inside the AgentCore Runtime. The path must be under ``/mnt`` with exactly one subdirectory level (for example, ``/mnt/data``).
+
+
+
+
+
+            - **s3FilesAccessPoint** *(dict) --*
+
+              Configuration for an Amazon S3 Files access point to mount into the AgentCore Runtime.
+
+
+
+
+              - **accessPointArn** *(string) --* **[REQUIRED]**
+
+                The ARN of the S3 Files access point to mount into the AgentCore Runtime.
+
+
+
+
+              - **mountPath** *(string) --* **[REQUIRED]**
+
+                The mount path for the S3 Files access point inside the AgentCore Runtime. The path must be under ``/mnt`` with exactly one subdirectory level (for example, ``/mnt/data``).
+
+
+
+
+
+            - **efsAccessPoint** *(dict) --*
+
+              Configuration for an Amazon EFS access point to mount into the AgentCore Runtime.
+
+
+
+
+              - **accessPointArn** *(string) --* **[REQUIRED]**
+
+                The ARN of the EFS access point to mount into the AgentCore Runtime.
+
+
+
+
+              - **mountPath** *(string) --* **[REQUIRED]**
+
+                The mount path for the EFS access point inside the AgentCore Runtime. The path must be under ``/mnt`` with exactly one subdirectory level (for example, ``/mnt/data``).
+
+
+
+
+
+            - **capacityProviderVolume** *(dict) --*
+
+              Configuration for a capacity provider volume to mount into the AgentCore Runtime. This mounts a persistent volume that is defined on the capacity provider, referenced by its logical name.
+
+
+
+
+              - **volumeName** *(string) --* **[REQUIRED]**
+
+                The logical name of the capacity provider volume to mount. This name must match a volume that is defined in the capacity provider's list of volumes.
+
+
+
+
+              - **mountPath** *(string) --* **[REQUIRED]**
+
+                The mount path for the capacity provider volume inside the AgentCore Runtime. The path must be under ``/mnt`` with exactly one subdirectory level (for example, ``/mnt/data``).
+
+
+
+
+
+
+
+
+
+    :type environmentArtifact: dict
+    :param environmentArtifact:
+
+      The environment artifact for the harness, such as a custom container image containing additional dependencies.
+
+      .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``containerConfiguration``.
+
+
+      - **containerConfiguration** *(dict) --*
+
+        Representation of a container configuration.
+
+
+
+
+        - **containerUri** *(string) --* **[REQUIRED]**
+
+          The ECR URI of the container.
+
+
+
+
+
+
+    :type environmentVariables: dict
+    :param environmentVariables:
+
+      Environment variables to set in the harness runtime environment.
+
+
+
+
+      - *(string) --*
+
+
+        - *(string) --*
+
+
+
+
+    :type authorizerConfiguration: dict
+    :param authorizerConfiguration:
+
+      Represents inbound authorization configuration options used to authenticate incoming requests.
+
+      .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``customJWTAuthorizer``.
+
+
+      - **customJWTAuthorizer** *(dict) --*
+
+        The inbound JWT-based authorization, specifying how incoming requests should be authenticated.
+
+
+
+
+        - **discoveryUrl** *(string) --* **[REQUIRED]**
+
+          This URL is used to fetch OpenID Connect configuration or authorization server metadata for validating incoming tokens.
+
+
+
+
+        - **allowedAudience** *(list) --*
+
+          Represents individual audience values that are validated in the incoming JWT token validation process.
+
+
+
+
+          - *(string) --*
+
+
+
+        - **allowedClients** *(list) --*
+
+          Represents individual client IDs that are validated in the incoming JWT token validation process.
+
+
+
+
+          - *(string) --*
+
+
+
+        - **allowedScopes** *(list) --*
+
+          An array of scopes that are allowed to access the token.
+
+
+
+
+          - *(string) --*
+
+
+
+        - **advertisedScopeMapping** *(dict) --*
+
+          A map that associates each scope in ``allowedScopes`` with a corresponding advertised scope value. The advertised scope appears in OAuth protected resource metadata and ``WWW-Authenticate`` response headers. Use this parameter when the scope that clients request from your identity provider differs from the scope in the validated token. Each key is a scope from ``allowedScopes`` that the service uses for token validation. Each value is the corresponding scope that the service advertises to clients. Scopes without a mapping entry appear unchanged to clients.
+
+
+
+
+          - *(string) --*
+
+
+            - *(string) --*
+
+
+
+
+        - **customClaims** *(list) --*
+
+          An array of objects that define a custom claim validation name, value, and operation
+
+
+
+
+          - *(dict) --*
+
+            Defines the name of a custom claim field and rules for finding matches to authenticate its value.
+
+
+
+
+            - **inboundTokenClaimName** *(string) --* **[REQUIRED]**
+
+              The name of the custom claim field to check.
+
+
+
+
+            - **inboundTokenClaimValueType** *(string) --* **[REQUIRED]**
+
+              The data type of the claim value to check for.
+
+
+
+
+              * Use ``STRING`` if you want to find an exact match to a string you define.
+
+              * Use ``STRING_ARRAY`` if you want to fnd a match to at least one value in an array you define.
+
+
+
+
+
+            - **authorizingClaimMatchValue** *(dict) --* **[REQUIRED]**
+
+              Defines the value or values to match for and the relationship of the match.
+
+
+
+
+              - **claimMatchValue** *(dict) --* **[REQUIRED]**
+
+                The value or values to match for.
+
+                .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``matchValueString``, ``matchValueStringList``.
+
+
+                - **matchValueString** *(string) --*
+
+                  The string value to match for.
+
+
+
+
+                - **matchValueStringList** *(list) --*
+
+                  An array of strings to check for a match.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+              - **claimMatchOperator** *(string) --* **[REQUIRED]**
+
+                Defines the relationship between the claim field value and the value or values you're matching for.
+
+
+
+
+
+
+
+        - **privateEndpoint** *(dict) --*
+
+          The private endpoint configuration for a gateway target. Defines how the gateway connects to private resources in your VPC.
+
+          .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``selfManagedLatticeResource``, ``managedVpcResource``.
+
+
+          - **selfManagedLatticeResource** *(dict) --*
+
+            Configuration for connecting to a private resource using a self-managed VPC Lattice resource configuration.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``resourceConfigurationIdentifier``.
+
+
+            - **resourceConfigurationIdentifier** *(string) --*
+
+              The ARN or ID of the VPC Lattice resource configuration.
+
+
+
+
+
+          - **managedVpcResource** *(dict) --*
+
+            Configuration for connecting to a private resource using a managed VPC Lattice resource. The gateway creates and manages the VPC Lattice resources on your behalf.
+
+
+
+
+            - **vpcIdentifier** *(string) --* **[REQUIRED]**
+
+              The ID of the VPC that contains your private resource.
+
+
+
+
+            - **subnetIds** *(list) --* **[REQUIRED]**
+
+              The subnet IDs within the VPC where the VPC Lattice resource gateway is placed.
+
+
+
+
+              - *(string) --*
+
+
+
+            - **endpointIpAddressType** *(string) --* **[REQUIRED]**
+
+              The IP address type for the resource configuration endpoint.
+
+
+
+
+            - **securityGroupIds** *(list) --*
+
+              The security group IDs to associate with the VPC Lattice resource gateway. If not specified, the default security group for the VPC is used.
+
+
+
+
+              - *(string) --*
+
+
+
+            - **tags** *(dict) --*
+
+              Tags to apply to the managed VPC Lattice resource gateway.
+
+
+
+
+              - *(string) --*
+
+
+                - *(string) --*
+
+
+
+
+            - **routingDomain** *(string) --*
+
+              An intermediate domain to use as the resource configuration endpoint instead of the actual target domain. Use this when you want to route traffic through an intermediate component such as a VPC endpoint or internal load balancer. For more information, see xref:lattice-vpc-egress-routing-domain[Route traffic through an intermediate domain].
+
+
+
+
+
+
+        - **privateEndpointOverrides** *(list) --*
+
+          The private endpoint overrides for the custom JWT authorizer configuration.
+
+
+
+
+          - *(dict) --*
+
+            A mapping of a specific domain to a private endpoint for secure connectivity through a VPC Lattice resource configuration.
+
+
+
+
+            - **domain** *(string) --* **[REQUIRED]**
+
+              The domain to override with a private endpoint.
+
+
+
+
+            - **privateEndpoint** *(dict) --* **[REQUIRED]**
+
+              The private endpoint configuration for the specified domain.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``selfManagedLatticeResource``, ``managedVpcResource``.
+
+
+              - **selfManagedLatticeResource** *(dict) --*
+
+                Configuration for connecting to a private resource using a self-managed VPC Lattice resource configuration.
+
+                .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``resourceConfigurationIdentifier``.
+
+
+                - **resourceConfigurationIdentifier** *(string) --*
+
+                  The ARN or ID of the VPC Lattice resource configuration.
+
+
+
+
+
+              - **managedVpcResource** *(dict) --*
+
+                Configuration for connecting to a private resource using a managed VPC Lattice resource. The gateway creates and manages the VPC Lattice resources on your behalf.
+
+
+
+
+                - **vpcIdentifier** *(string) --* **[REQUIRED]**
+
+                  The ID of the VPC that contains your private resource.
+
+
+
+
+                - **subnetIds** *(list) --* **[REQUIRED]**
+
+                  The subnet IDs within the VPC where the VPC Lattice resource gateway is placed.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **endpointIpAddressType** *(string) --* **[REQUIRED]**
+
+                  The IP address type for the resource configuration endpoint.
+
+
+
+
+                - **securityGroupIds** *(list) --*
+
+                  The security group IDs to associate with the VPC Lattice resource gateway. If not specified, the default security group for the VPC is used.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tags** *(dict) --*
+
+                  Tags to apply to the managed VPC Lattice resource gateway.
+
+
+
+
+                  - *(string) --*
+
+
+                    - *(string) --*
+
+
+
+
+                - **routingDomain** *(string) --*
+
+                  An intermediate domain to use as the resource configuration endpoint instead of the actual target domain. Use this when you want to route traffic through an intermediate component such as a VPC endpoint or internal load balancer. For more information, see xref:lattice-vpc-egress-routing-domain[Route traffic through an intermediate domain].
+
+
+
+
+
+
+
+
+        - **allowedWorkloadConfiguration** *(dict) --*
+
+          The configuration that restricts which workloads in the request's identity chain are allowed to invoke the target, identified by their hosting environments and workload identities. At launch, this is supported only for AgentCore Runtime targets, and the allowed workloads are AgentCore Gateways.
+
+
+
+
+          - **hostingEnvironments** *(list) --*
+
+            The list of hosting environments whose workloads are allowed to invoke the target. At launch, the only supported hosting environment is AgentCore Gateway.
+
+
+
+
+            - *(dict) --*
+
+              A hosting environment whose workloads are allowed to invoke the target. At launch, the only supported hosting environment is AgentCore Gateway.
+
+
+
+
+              - **arn** *(string) --* **[REQUIRED]**
+
+                The Amazon Resource Name (ARN) of the hosting environment.
+
+
+
+
+
+
+          - **workloadIdentities** *(list) --*
+
+            The list of workload identities that are allowed to invoke the target.
+
+
+
+
+            - *(string) --*
+
+
+
+
+
+
+    :type model: dict
+    :param model:
+
+      The model configuration for the harness. Supports Amazon Bedrock, OpenAI, and Google Gemini model providers.
+
+      .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``bedrockModelConfig``, ``openAiModelConfig``, ``geminiModelConfig``, ``liteLlmModelConfig``.
+
+
+      - **bedrockModelConfig** *(dict) --*
+
+        Configuration for an Amazon Bedrock model.
+
+
+
+
+        - **modelId** *(string) --* **[REQUIRED]**
+
+          The Bedrock model ID.
+
+
+
+
+        - **maxTokens** *(integer) --*
+
+          The maximum number of tokens to allow in the generated response per model call.
+
+
+
+
+        - **temperature** *(float) --*
+
+          The temperature to set when calling the model.
+
+
+
+
+        - **topP** *(float) --*
+
+          The topP set when calling the model.
+
+
+
+
+        - **apiFormat** *(string) --*
+
+          The API format to use when calling the Bedrock provider.
+
+
+
+
+        - **additionalParams** (:ref:`document<document>`) --
+
+          Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+      - **openAiModelConfig** *(dict) --*
+
+        Configuration for an OpenAI model.
+
+
+
+
+        - **modelId** *(string) --* **[REQUIRED]**
+
+          The OpenAI model ID.
+
+
+
+
+        - **apiKeyArn** *(string) --* **[REQUIRED]**
+
+          The ARN of your OpenAI API key on AgentCore Identity.
+
+
+
+
+        - **maxTokens** *(integer) --*
+
+          The maximum number of tokens to allow in the generated response per model call.
+
+
+
+
+        - **temperature** *(float) --*
+
+          The temperature to set when calling the model.
+
+
+
+
+        - **topP** *(float) --*
+
+          The topP set when calling the model.
+
+
+
+
+        - **apiFormat** *(string) --*
+
+          The API format to use when calling the OpenAI provider.
+
+
+
+
+        - **additionalParams** (:ref:`document<document>`) --
+
+          Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+      - **geminiModelConfig** *(dict) --*
+
+        Configuration for a Google Gemini model.
+
+
+
+
+        - **modelId** *(string) --* **[REQUIRED]**
+
+          The Gemini model ID.
+
+
+
+
+        - **apiKeyArn** *(string) --* **[REQUIRED]**
+
+          The ARN of your Gemini API key on AgentCore Identity.
+
+
+
+
+        - **maxTokens** *(integer) --*
+
+          The maximum number of tokens to allow in the generated response per model call.
+
+
+
+
+        - **temperature** *(float) --*
+
+          The temperature to set when calling the model.
+
+
+
+
+        - **topP** *(float) --*
+
+          The topP set when calling the model.
+
+
+
+
+        - **topK** *(integer) --*
+
+          The topK set when calling the model.
+
+
+
+
+        - **additionalParams** (:ref:`document<document>`) --
+
+          Provider-specific parameters passed through to the Gemini model provider unchanged.
+
+
+
+
+
+      - **liteLlmModelConfig** *(dict) --*
+
+        The LiteLLM model configuration for connecting to third-party model providers.
+
+
+
+
+        - **modelId** *(string) --* **[REQUIRED]**
+
+          The LiteLLM model identifier (e.g., "anthropic/claude-3-sonnet").
+
+
+
+
+        - **apiKeyArn** *(string) --*
+
+          The ARN of the API key in AgentCore Identity for authenticating with the model provider.
+
+
+
+
+        - **apiBase** *(string) --*
+
+          The base URL for the model provider's API endpoint.
+
+
+
+
+        - **maxTokens** *(integer) --*
+
+          The maximum number of tokens to allow in the generated response per iteration.
+
+
+
+
+        - **temperature** *(float) --*
+
+          The temperature to set when calling the model.
+
+
+
+
+        - **topP** *(float) --*
+
+          The topP set when calling the model.
+
+
+
+
+        - **additionalParams** (:ref:`document<document>`) --
+
+          Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+
+    :type systemPrompt: list
+    :param systemPrompt:
+
+      The system prompt that defines the agent's behavior and instructions.
+
+
+
+
+      - *(dict) --*
+
+        A content block in the system prompt.
+
+        .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``text``.
+
+
+        - **text** *(string) --*
+
+          The text content of the system prompt block.
+
+
+
+
+
+
+    :type tools: list
+    :param tools:
+
+      The tools available to the agent, such as remote MCP servers, AgentCore Gateway, AgentCore Browser, Code Interpreter, or inline functions.
+
+
+
+
+      - *(dict) --*
+
+        A tool available to the agent loop.
+
+
+
+
+        - **type** *(string) --* **[REQUIRED]**
+
+          The type of tool.
+
+
+
+
+        - **name** *(string) --*
+
+          Unique name for the tool. If not provided, a name will be inferred or generated.
+
+
+
+
+        - **config** *(dict) --*
+
+          Tool-specific configuration.
+
+          .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``remoteMcp``, ``agentCoreBrowser``, ``agentCoreGateway``, ``inlineFunction``, ``agentCoreCodeInterpreter``.
+
+
+          - **remoteMcp** *(dict) --*
+
+            Configuration for remote MCP server.
+
+
+
+
+            - **url** *(string) --* **[REQUIRED]**
+
+              URL of the MCP endpoint.
+
+
+
+
+            - **headers** *(dict) --*
+
+              Custom headers to include when connecting to the remote MCP server.
+
+
+
+
+              - *(string) --*
+
+                The key of an HTTP header.
+
+
+
+
+                - *(string) --*
+
+                  The value of an HTTP header.
+
+
+
+
+
+
+
+          - **agentCoreBrowser** *(dict) --*
+
+            Configuration for AgentCore Browser.
+
+
+
+
+            - **browserArn** *(string) --*
+
+              If not populated, the built-in Browser ARN is used.
+
+
+
+
+
+          - **agentCoreGateway** *(dict) --*
+
+            Configuration for AgentCore Gateway.
+
+
+
+
+            - **gatewayArn** *(string) --* **[REQUIRED]**
+
+              The ARN of the desired AgentCore Gateway.
+
+
+
+
+            - **outboundAuth** *(dict) --*
+
+              How harness authenticates to this Gateway. Defaults to AWS_IAM (SigV4) if omitted.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``awsIam``, ``none``, ``oauth``.
+
+
+              - **awsIam** *(dict) --*
+
+                SigV4-sign requests using the agent's execution role.
+
+
+
+
+
+              - **none** *(dict) --*
+
+                No authentication.
+
+
+
+
+
+              - **oauth** *(dict) --*
+
+                Use OAuth credentials for outbound authentication to the gateway.
+
+
+
+
+                - **providerArn** *(string) --* **[REQUIRED]**
+
+                  The Amazon Resource Name (ARN) of the OAuth credential provider. This ARN identifies the provider in Amazon Web Services.
+
+
+
+
+                - **scopes** *(list) --* **[REQUIRED]**
+
+                  The OAuth scopes for the credential provider. These scopes define the level of access requested from the OAuth provider.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **customParameters** *(dict) --*
+
+                  The custom parameters for the OAuth credential provider. These parameters provide additional configuration for the OAuth authentication process.
+
+
+
+
+                  - *(string) --*
+
+
+                    - *(string) --*
+
+
+
+
+                - **grantType** *(string) --*
+
+                  Specifies the kind of credentials to use for authorization:
+
+
+
+
+                  * ``CLIENT_CREDENTIALS`` - Authorization with a client ID and secret.
+
+                  * ``AUTHORIZATION_CODE`` - Authorization with a token that is specific to an individual end user.
+
+                  * ``TOKEN_EXCHANGE`` - Authorization using on-behalf-of token exchange. An inbound user token is exchanged for a downstream access token scoped to the target audience.
+
+
+
+
+
+                - **defaultReturnUrl** *(string) --*
+
+                  The URL where the end user's browser is redirected after obtaining the authorization code. Generally points to the customer's application.
+
+
+
+
+
+
+
+          - **inlineFunction** *(dict) --*
+
+            Configuration for an inline function tool.
+
+
+
+
+            - **description** *(string) --* **[REQUIRED]**
+
+              Description of what the tool does, provided to the model.
+
+
+
+
+            - **inputSchema** (:ref:`document<document>`) -- **[REQUIRED]**
+
+              JSON Schema describing the tool's input parameters.
+
+
+
+
+
+          - **agentCoreCodeInterpreter** *(dict) --*
+
+            Configuration for AgentCore Code Interpreter.
+
+
+
+
+            - **codeInterpreterArn** *(string) --*
+
+              If not populated, the built-in Code Interpreter ARN is used.
+
+
+
+
+
+
+
+
+    :type skills: list
+    :param skills:
+
+      The skills available to the agent. Skills are bundles of files that the agent can pull into its context on demand.
+
+
+
+
+      - *(dict) --*
+
+        A skill available to the agent.
+
+        .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``path``, ``s3``, ``git``, ``awsSkills``.
+
+
+        - **path** *(string) --*
+
+          The filesystem path to the skill definition.
+
+
+
+
+        - **s3** *(dict) --*
+
+          An S3 source containing the skill.
+
+
+
+
+          - **uri** *(string) --* **[REQUIRED]**
+
+            The S3 URI pointing to the skill directory (e.g., s3://bucket/skills/my-skill/).
+
+
+
+
+
+        - **git** *(dict) --*
+
+          A git repository containing the skill.
+
+
+
+
+          - **url** *(string) --* **[REQUIRED]**
+
+            The HTTPS URL of the git repository.
+
+
+
+
+          - **path** *(string) --*
+
+            Subdirectory within the repository containing the skill.
+
+
+
+
+          - **auth** *(dict) --*
+
+            Authentication configuration for private repositories.
+
+
+
+
+            - **credentialArn** *(string) --* **[REQUIRED]**
+
+              The ARN of the credential in AgentCore Identity containing the password or personal access token.
+
+
+
+
+            - **username** *(string) --*
+
+              Username for authentication. Defaults to 'oauth2' if not specified.
+
+
+
+
+
+
+        - **awsSkills** *(dict) --*
+
+          AWS Skills baked into the harness's underlying Runtime.
+
+
+
+
+          - **paths** *(list) --*
+
+            Optionally filter allowed skills with glob syntax, e.g., ['core-skills/*'].
+
+
+
+
+            - *(string) --*
+
+
+
+
+
+
+    :type allowedTools: list
+    :param allowedTools:
+
+      The tools that the agent is allowed to use. Supports glob patterns such as * for all tools, @builtin for all built-in tools, or @serverName/toolName for specific MCP server tools.
+
+
+
+
+      - *(string) --*
+
+
+
+    :type memory: dict
+    :param memory:
+
+      The AgentCore Memory configuration for persisting conversation context across sessions.
+
+      .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``agentCoreMemoryConfiguration``, ``managedMemoryConfiguration``, ``disabled``.
+
+
+      - **agentCoreMemoryConfiguration** *(dict) --*
+
+        The AgentCore Memory configuration.
+
+
+
+
+        - **arn** *(string) --* **[REQUIRED]**
+
+          The ARN of the AgentCore Memory resource.
+
+
+
+
+        - **actorId** *(string) --*
+
+          The actor ID for memory operations.
+
+
+
+
+        - **messagesCount** *(integer) --*
+
+          The number of messages to retrieve from memory.
+
+
+
+
+        - **retrievalConfig** *(dict) --*
+
+          The retrieval configuration for long-term memory, mapping namespace path templates to retrieval settings.
+
+
+
+
+          - *(string) --*
+
+
+            - *(dict) --*
+
+              Configuration for memory retrieval within a namespace.
+
+
+
+
+              - **topK** *(integer) --*
+
+                The maximum number of memory entries to retrieve.
+
+
+
+
+              - **relevanceScore** *(float) --*
+
+                The minimum relevance score for retrieved memories.
+
+
+
+
+              - **strategyId** *(string) --*
+
+                The ID of the retrieval strategy to use.
+
+
+
+
+
+
+
+
+      - **managedMemoryConfiguration** *(dict) --*
+
+        Harness creates and manages a memory resource in the customer's account.
+
+
+
+
+        - **arn** *(string) --*
+
+          The ARN of the managed AgentCore Memory resource. Read-only on Get, ignored on Create/Update input.
+
+
+
+
+        - **strategies** *(list) --*
+
+          Strategy types to enable. Defaults to [SEMANTIC, SUMMARIZATION].
+
+
+
+
+          - *(string) --*
+
+
+
+        - **eventExpiryDuration** *(integer) --*
+
+          Event retention in days. Defaults to 30.
+
+
+
+
+        - **encryptionKeyArn** *(string) --*
+
+          Customer-managed KMS key. Defaults to AWS-owned key. Not updatable after creation.
+
+
+
+
+
+      - **disabled** *(dict) --*
+
+        Explicitly opt out of memory.
+
+
+
+
+
+
+    :type truncation: dict
+    :param truncation:
+
+      The truncation configuration for managing conversation context when it exceeds model limits.
+
+
+
+
+      - **strategy** *(string) --* **[REQUIRED]**
+
+        The truncation strategy to use.
+
+
+
+
+      - **config** *(dict) --*
+
+        The strategy-specific configuration.
+
+        .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``slidingWindow``, ``summarization``.
+
+
+        - **slidingWindow** *(dict) --*
+
+          Configuration for sliding window truncation.
+
+
+
+
+          - **messagesCount** *(integer) --*
+
+            The number of recent messages to retain in the context window.
+
+
+
+
+
+        - **summarization** *(dict) --*
+
+          Configuration for summarization-based truncation.
+
+
+
+
+          - **summaryRatio** *(float) --*
+
+            The ratio of content to summarize.
+
+
+
+
+          - **preserveRecentMessages** *(integer) --*
+
+            The number of recent messages to preserve without summarization.
+
+
+
+
+          - **summarizationSystemPrompt** *(string) --*
+
+            The system prompt used for generating summaries.
+
+
+
+
+
+
+
+    :type maxIterations: integer
+    :param maxIterations:
+
+      The maximum number of iterations the agent loop can execute per invocation.
+
+
+
+
+    :type maxTokens: integer
+    :param maxTokens:
+
+      The maximum total number of output tokens the agent can generate across all model calls within a single invocation.
+
+
+
+
+    :type timeoutSeconds: integer
+    :param timeoutSeconds:
+
+      The maximum duration in seconds for the agent loop execution per invocation.
+
+
+
+
+    :type tags: dict
+    :param tags:
+
+      Tags to apply to the harness resource.
+
+
+
+
+      - *(string) --*
+
+
+        - *(string) --*
+
+
+
+
+
+    :rtype: dict
+    :returns:
+
+      **Response Syntax**
+
+
+      ::
+
+        {
+            'harness': {
+                'harnessId': 'string',
+                'harnessName': 'string',
+                'arn': 'string',
+                'status': 'CREATING'|'CREATE_FAILED'|'UPDATING'|'UPDATE_FAILED'|'READY'|'DELETING'|'DELETE_FAILED',
+                'harnessVersion': 'string',
+                'executionRoleArn': 'string',
+                'createdAt': datetime(2015, 1, 1),
+                'updatedAt': datetime(2015, 1, 1),
+                'model': {
+                    'bedrockModelConfig': {
+                        'modelId': 'string',
+                        'maxTokens': 123,
+                        'temperature': ...,
+                        'topP': ...,
+                        'apiFormat': 'converse_stream'|'responses'|'chat_completions',
+                        'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+                    },
+                    'openAiModelConfig': {
+                        'modelId': 'string',
+                        'apiKeyArn': 'string',
+                        'maxTokens': 123,
+                        'temperature': ...,
+                        'topP': ...,
+                        'apiFormat': 'chat_completions'|'responses',
+                        'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+                    },
+                    'geminiModelConfig': {
+                        'modelId': 'string',
+                        'apiKeyArn': 'string',
+                        'maxTokens': 123,
+                        'temperature': ...,
+                        'topP': ...,
+                        'topK': 123,
+                        'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+                    },
+                    'liteLlmModelConfig': {
+                        'modelId': 'string',
+                        'apiKeyArn': 'string',
+                        'apiBase': 'string',
+                        'maxTokens': 123,
+                        'temperature': ...,
+                        'topP': ...,
+                        'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+                    }
+                },
+                'systemPrompt': [
+                    {
+                        'text': 'string'
+                    },
+                ],
+                'tools': [
+                    {
+                        'type': 'remote_mcp'|'agentcore_browser'|'agentcore_gateway'|'inline_function'|'agentcore_code_interpreter',
+                        'name': 'string',
+                        'config': {
+                            'remoteMcp': {
+                                'url': 'string',
+                                'headers': {
+                                    'string': 'string'
+                                }
+                            },
+                            'agentCoreBrowser': {
+                                'browserArn': 'string'
+                            },
+                            'agentCoreGateway': {
+                                'gatewayArn': 'string',
+                                'outboundAuth': {
+                                    'awsIam': {},
+                                    'none': {},
+                                    'oauth': {
+                                        'providerArn': 'string',
+                                        'scopes': [
+                                            'string',
+                                        ],
+                                        'customParameters': {
+                                            'string': 'string'
+                                        },
+                                        'grantType': 'CLIENT_CREDENTIALS'|'AUTHORIZATION_CODE'|'TOKEN_EXCHANGE',
+                                        'defaultReturnUrl': 'string'
+                                    }
+                                }
+                            },
+                            'inlineFunction': {
+                                'description': 'string',
+                                'inputSchema': {...}|[...]|123|123.4|'string'|True|None
+                            },
+                            'agentCoreCodeInterpreter': {
+                                'codeInterpreterArn': 'string'
+                            }
+                        }
+                    },
+                ],
+                'skills': [
+                    {
+                        'path': 'string',
+                        's3': {
+                            'uri': 'string'
+                        },
+                        'git': {
+                            'url': 'string',
+                            'path': 'string',
+                            'auth': {
+                                'credentialArn': 'string',
+                                'username': 'string'
+                            }
+                        },
+                        'awsSkills': {
+                            'paths': [
+                                'string',
+                            ]
+                        }
+                    },
+                ],
+                'allowedTools': [
+                    'string',
+                ],
+                'truncation': {
+                    'strategy': 'sliding_window'|'summarization'|'none',
+                    'config': {
+                        'slidingWindow': {
+                            'messagesCount': 123
+                        },
+                        'summarization': {
+                            'summaryRatio': ...,
+                            'preserveRecentMessages': 123,
+                            'summarizationSystemPrompt': 'string'
+                        }
+                    }
+                },
+                'environment': {
+                    'agentCoreRuntimeEnvironment': {
+                        'agentRuntimeArn': 'string',
+                        'agentRuntimeName': 'string',
+                        'agentRuntimeId': 'string',
+                        'lifecycleConfiguration': {
+                            'idleRuntimeSessionTimeout': 123,
+                            'maxLifetime': 123
+                        },
+                        'networkConfiguration': {
+                            'networkMode': 'PUBLIC'|'VPC',
+                            'networkModeConfig': {
+                                'securityGroups': [
+                                    'string',
+                                ],
+                                'subnets': [
+                                    'string',
+                                ],
+                                'requireServiceS3Endpoint': True|False
+                            }
+                        },
+                        'filesystemConfigurations': [
+                            {
+                                'sessionStorage': {
+                                    'mountPath': 'string'
+                                },
+                                's3FilesAccessPoint': {
+                                    'accessPointArn': 'string',
+                                    'mountPath': 'string'
+                                },
+                                'efsAccessPoint': {
+                                    'accessPointArn': 'string',
+                                    'mountPath': 'string'
+                                },
+                                'capacityProviderVolume': {
+                                    'volumeName': 'string',
+                                    'mountPath': 'string'
+                                }
+                            },
+                        ]
+                    }
+                },
+                'environmentArtifact': {
+                    'containerConfiguration': {
+                        'containerUri': 'string'
+                    }
+                },
+                'environmentVariables': {
+                    'string': 'string'
+                },
+                'authorizerConfiguration': {
+                    'customJWTAuthorizer': {
+                        'discoveryUrl': 'string',
+                        'allowedAudience': [
+                            'string',
+                        ],
+                        'allowedClients': [
+                            'string',
+                        ],
+                        'allowedScopes': [
+                            'string',
+                        ],
+                        'advertisedScopeMapping': {
+                            'string': 'string'
+                        },
+                        'customClaims': [
+                            {
+                                'inboundTokenClaimName': 'string',
+                                'inboundTokenClaimValueType': 'STRING'|'STRING_ARRAY',
+                                'authorizingClaimMatchValue': {
+                                    'claimMatchValue': {
+                                        'matchValueString': 'string',
+                                        'matchValueStringList': [
+                                            'string',
+                                        ]
+                                    },
+                                    'claimMatchOperator': 'EQUALS'|'CONTAINS'|'CONTAINS_ANY'
+                                }
+                            },
+                        ],
+                        'privateEndpoint': {
+                            'selfManagedLatticeResource': {
+                                'resourceConfigurationIdentifier': 'string'
+                            },
+                            'managedVpcResource': {
+                                'vpcIdentifier': 'string',
+                                'subnetIds': [
+                                    'string',
+                                ],
+                                'endpointIpAddressType': 'IPV4'|'IPV6',
+                                'securityGroupIds': [
+                                    'string',
+                                ],
+                                'tags': {
+                                    'string': 'string'
+                                },
+                                'routingDomain': 'string'
+                            }
+                        },
+                        'privateEndpointOverrides': [
+                            {
+                                'domain': 'string',
+                                'privateEndpoint': {
+                                    'selfManagedLatticeResource': {
+                                        'resourceConfigurationIdentifier': 'string'
+                                    },
+                                    'managedVpcResource': {
+                                        'vpcIdentifier': 'string',
+                                        'subnetIds': [
+                                            'string',
+                                        ],
+                                        'endpointIpAddressType': 'IPV4'|'IPV6',
+                                        'securityGroupIds': [
+                                            'string',
+                                        ],
+                                        'tags': {
+                                            'string': 'string'
+                                        },
+                                        'routingDomain': 'string'
+                                    }
+                                }
+                            },
+                        ],
+                        'allowedWorkloadConfiguration': {
+                            'hostingEnvironments': [
+                                {
+                                    'arn': 'string'
+                                },
+                            ],
+                            'workloadIdentities': [
+                                'string',
+                            ]
+                        }
+                    }
+                },
+                'memory': {
+                    'agentCoreMemoryConfiguration': {
+                        'arn': 'string',
+                        'actorId': 'string',
+                        'messagesCount': 123,
+                        'retrievalConfig': {
+                            'string': {
+                                'topK': 123,
+                                'relevanceScore': ...,
+                                'strategyId': 'string'
+                            }
+                        }
+                    },
+                    'managedMemoryConfiguration': {
+                        'arn': 'string',
+                        'strategies': [
+                            'SEMANTIC'|'SUMMARIZATION'|'USER_PREFERENCE'|'EPISODIC',
+                        ],
+                        'eventExpiryDuration': 123,
+                        'encryptionKeyArn': 'string'
+                    },
+                    'disabled': {}
+                },
+                'maxIterations': 123,
+                'maxTokens': 123,
+                'timeoutSeconds': 123,
+                'failureReason': 'string'
+            }
+        }
+
+      **Response Structure**
+
+
+
+      - *(dict) --*
+
+
+        - **harness** *(dict) --*
+
+          The harness that was created.
+
+
+
+
+          - **harnessId** *(string) --*
+
+            The ID of the harness.
+
+
+
+
+          - **harnessName** *(string) --*
+
+            The name of the harness.
+
+
+
+
+          - **arn** *(string) --*
+
+            The ARN of the harness.
+
+
+
+
+          - **status** *(string) --*
+
+            The status of the harness.
+
+
+
+
+          - **harnessVersion** *(string) --*
+
+            The version of the harness. Incremented on every successful UpdateHarness.
+
+
+
+
+          - **executionRoleArn** *(string) --*
+
+            IAM role the harness assumes when running.
+
+
+
+
+          - **createdAt** *(datetime) --*
+
+            The createdAt time of the harness.
+
+
+
+
+          - **updatedAt** *(datetime) --*
+
+            The updatedAt time of the harness.
+
+
+
+
+          - **model** *(dict) --*
+
+            The configuration of the default model used by the Harness.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``bedrockModelConfig``, ``openAiModelConfig``, ``geminiModelConfig``, ``liteLlmModelConfig``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                    'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+            - **bedrockModelConfig** *(dict) --*
+
+              Configuration for an Amazon Bedrock model.
+
+
+
+
+              - **modelId** *(string) --*
+
+                The Bedrock model ID.
+
+
+
+
+              - **maxTokens** *(integer) --*
+
+                The maximum number of tokens to allow in the generated response per model call.
+
+
+
+
+              - **temperature** *(float) --*
+
+                The temperature to set when calling the model.
+
+
+
+
+              - **topP** *(float) --*
+
+                The topP set when calling the model.
+
+
+
+
+              - **apiFormat** *(string) --*
+
+                The API format to use when calling the Bedrock provider.
+
+
+
+
+              - **additionalParams** (:ref:`document<document>`) --
+
+                Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+            - **openAiModelConfig** *(dict) --*
+
+              Configuration for an OpenAI model.
+
+
+
+
+              - **modelId** *(string) --*
+
+                The OpenAI model ID.
+
+
+
+
+              - **apiKeyArn** *(string) --*
+
+                The ARN of your OpenAI API key on AgentCore Identity.
+
+
+
+
+              - **maxTokens** *(integer) --*
+
+                The maximum number of tokens to allow in the generated response per model call.
+
+
+
+
+              - **temperature** *(float) --*
+
+                The temperature to set when calling the model.
+
+
+
+
+              - **topP** *(float) --*
+
+                The topP set when calling the model.
+
+
+
+
+              - **apiFormat** *(string) --*
+
+                The API format to use when calling the OpenAI provider.
+
+
+
+
+              - **additionalParams** (:ref:`document<document>`) --
+
+                Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+            - **geminiModelConfig** *(dict) --*
+
+              Configuration for a Google Gemini model.
+
+
+
+
+              - **modelId** *(string) --*
+
+                The Gemini model ID.
+
+
+
+
+              - **apiKeyArn** *(string) --*
+
+                The ARN of your Gemini API key on AgentCore Identity.
+
+
+
+
+              - **maxTokens** *(integer) --*
+
+                The maximum number of tokens to allow in the generated response per model call.
+
+
+
+
+              - **temperature** *(float) --*
+
+                The temperature to set when calling the model.
+
+
+
+
+              - **topP** *(float) --*
+
+                The topP set when calling the model.
+
+
+
+
+              - **topK** *(integer) --*
+
+                The topK set when calling the model.
+
+
+
+
+              - **additionalParams** (:ref:`document<document>`) --
+
+                Provider-specific parameters passed through to the Gemini model provider unchanged.
+
+
+
+
+
+            - **liteLlmModelConfig** *(dict) --*
+
+              The LiteLLM model configuration for connecting to third-party model providers.
+
+
+
+
+              - **modelId** *(string) --*
+
+                The LiteLLM model identifier (e.g., "anthropic/claude-3-sonnet").
+
+
+
+
+              - **apiKeyArn** *(string) --*
+
+                The ARN of the API key in AgentCore Identity for authenticating with the model provider.
+
+
+
+
+              - **apiBase** *(string) --*
+
+                The base URL for the model provider's API endpoint.
+
+
+
+
+              - **maxTokens** *(integer) --*
+
+                The maximum number of tokens to allow in the generated response per iteration.
+
+
+
+
+              - **temperature** *(float) --*
+
+                The temperature to set when calling the model.
+
+
+
+
+              - **topP** *(float) --*
+
+                The topP set when calling the model.
+
+
+
+
+              - **additionalParams** (:ref:`document<document>`) --
+
+                Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+
+          - **systemPrompt** *(list) --*
+
+            The system prompt of the harness.
+
+
+
+
+            - *(dict) --*
+
+              A content block in the system prompt.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``text``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **text** *(string) --*
+
+                The text content of the system prompt block.
+
+
+
+
+
+
+          - **tools** *(list) --*
+
+            The tools of the harness.
+
+
+
+
+            - *(dict) --*
+
+              A tool available to the agent loop.
+
+
+
+
+              - **type** *(string) --*
+
+                The type of tool.
+
+
+
+
+              - **name** *(string) --*
+
+                Unique name for the tool. If not provided, a name will be inferred or generated.
+
+
+
+
+              - **config** *(dict) --*
+
+                Tool-specific configuration.
+
+                .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``remoteMcp``, ``agentCoreBrowser``, ``agentCoreGateway``, ``inlineFunction``, ``agentCoreCodeInterpreter``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                            'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                - **remoteMcp** *(dict) --*
+
+                  Configuration for remote MCP server.
+
+
+
+
+                  - **url** *(string) --*
+
+                    URL of the MCP endpoint.
+
+
+
+
+                  - **headers** *(dict) --*
+
+                    Custom headers to include when connecting to the remote MCP server.
+
+
+
+
+                    - *(string) --*
+
+                      The key of an HTTP header.
+
+
+
+
+                      - *(string) --*
+
+                        The value of an HTTP header.
+
+
+
+
+
+
+
+                - **agentCoreBrowser** *(dict) --*
+
+                  Configuration for AgentCore Browser.
+
+
+
+
+                  - **browserArn** *(string) --*
+
+                    If not populated, the built-in Browser ARN is used.
+
+
+
+
+
+                - **agentCoreGateway** *(dict) --*
+
+                  Configuration for AgentCore Gateway.
+
+
+
+
+                  - **gatewayArn** *(string) --*
+
+                    The ARN of the desired AgentCore Gateway.
+
+
+
+
+                  - **outboundAuth** *(dict) --*
+
+                    How harness authenticates to this Gateway. Defaults to AWS_IAM (SigV4) if omitted.
+
+                    .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``awsIam``, ``none``, ``oauth``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                    'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                    - **awsIam** *(dict) --*
+
+                      SigV4-sign requests using the agent's execution role.
+
+
+
+
+
+                    - **none** *(dict) --*
+
+                      No authentication.
+
+
+
+
+
+                    - **oauth** *(dict) --*
+
+                      Use OAuth credentials for outbound authentication to the gateway.
+
+
+
+
+                      - **providerArn** *(string) --*
+
+                        The Amazon Resource Name (ARN) of the OAuth credential provider. This ARN identifies the provider in Amazon Web Services.
+
+
+
+
+                      - **scopes** *(list) --*
+
+                        The OAuth scopes for the credential provider. These scopes define the level of access requested from the OAuth provider.
+
+
+
+
+                        - *(string) --*
+
+
+
+                      - **customParameters** *(dict) --*
+
+                        The custom parameters for the OAuth credential provider. These parameters provide additional configuration for the OAuth authentication process.
+
+
+
+
+                        - *(string) --*
+
+
+                          - *(string) --*
+
+
+
+
+                      - **grantType** *(string) --*
+
+                        Specifies the kind of credentials to use for authorization:
+
+
+
+
+                        * ``CLIENT_CREDENTIALS`` - Authorization with a client ID and secret.
+
+                        * ``AUTHORIZATION_CODE`` - Authorization with a token that is specific to an individual end user.
+
+                        * ``TOKEN_EXCHANGE`` - Authorization using on-behalf-of token exchange. An inbound user token is exchanged for a downstream access token scoped to the target audience.
+
+
+
+
+
+                      - **defaultReturnUrl** *(string) --*
+
+                        The URL where the end user's browser is redirected after obtaining the authorization code. Generally points to the customer's application.
+
+
+
+
+
+
+
+                - **inlineFunction** *(dict) --*
+
+                  Configuration for an inline function tool.
+
+
+
+
+                  - **description** *(string) --*
+
+                    Description of what the tool does, provided to the model.
+
+
+
+
+                  - **inputSchema** (:ref:`document<document>`) --
+
+                    JSON Schema describing the tool's input parameters.
+
+
+
+
+
+                - **agentCoreCodeInterpreter** *(dict) --*
+
+                  Configuration for AgentCore Code Interpreter.
+
+
+
+
+                  - **codeInterpreterArn** *(string) --*
+
+                    If not populated, the built-in Code Interpreter ARN is used.
+
+
+
+
+
+
+
+
+          - **skills** *(list) --*
+
+            The skills of the harness.
+
+
+
+
+            - *(dict) --*
+
+              A skill available to the agent.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``path``, ``s3``, ``git``, ``awsSkills``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **path** *(string) --*
+
+                The filesystem path to the skill definition.
+
+
+
+
+              - **s3** *(dict) --*
+
+                An S3 source containing the skill.
+
+
+
+
+                - **uri** *(string) --*
+
+                  The S3 URI pointing to the skill directory (e.g., s3://bucket/skills/my-skill/).
+
+
+
+
+
+              - **git** *(dict) --*
+
+                A git repository containing the skill.
+
+
+
+
+                - **url** *(string) --*
+
+                  The HTTPS URL of the git repository.
+
+
+
+
+                - **path** *(string) --*
+
+                  Subdirectory within the repository containing the skill.
+
+
+
+
+                - **auth** *(dict) --*
+
+                  Authentication configuration for private repositories.
+
+
+
+
+                  - **credentialArn** *(string) --*
+
+                    The ARN of the credential in AgentCore Identity containing the password or personal access token.
+
+
+
+
+                  - **username** *(string) --*
+
+                    Username for authentication. Defaults to 'oauth2' if not specified.
+
+
+
+
+
+
+              - **awsSkills** *(dict) --*
+
+                AWS Skills baked into the harness's underlying Runtime.
+
+
+
+
+                - **paths** *(list) --*
+
+                  Optionally filter allowed skills with glob syntax, e.g., ['core-skills/*'].
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+
+          - **allowedTools** *(list) --*
+
+            The allowed tools of the harness. All tools are allowed by default.
+
+
+
+
+            - *(string) --*
+
+
+
+          - **truncation** *(dict) --*
+
+            Configuration for truncating model context.
+
+
+
+
+            - **strategy** *(string) --*
+
+              The truncation strategy to use.
+
+
+
+
+            - **config** *(dict) --*
+
+              The strategy-specific configuration.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``slidingWindow``, ``summarization``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **slidingWindow** *(dict) --*
+
+                Configuration for sliding window truncation.
+
+
+
+
+                - **messagesCount** *(integer) --*
+
+                  The number of recent messages to retain in the context window.
+
+
+
+
+
+              - **summarization** *(dict) --*
+
+                Configuration for summarization-based truncation.
+
+
+
+
+                - **summaryRatio** *(float) --*
+
+                  The ratio of content to summarize.
+
+
+
+
+                - **preserveRecentMessages** *(integer) --*
+
+                  The number of recent messages to preserve without summarization.
+
+
+
+
+                - **summarizationSystemPrompt** *(string) --*
+
+                  The system prompt used for generating summaries.
+
+
+
+
+
+
+
+          - **environment** *(dict) --*
+
+            The compute environment on which the Harness runs.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``agentCoreRuntimeEnvironment``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                    'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+            - **agentCoreRuntimeEnvironment** *(dict) --*
+
+              The AgentCore Runtime environment configuration.
+
+
+
+
+              - **agentRuntimeArn** *(string) --*
+
+                The ARN of the underlying AgentCore Runtime.
+
+
+
+
+              - **agentRuntimeName** *(string) --*
+
+                The name of the underlying AgentCore Runtime.
+
+
+
+
+              - **agentRuntimeId** *(string) --*
+
+                The ID of the underlying AgentCore Runtime.
+
+
+
+
+              - **lifecycleConfiguration** *(dict) --*
+
+                LifecycleConfiguration lets you manage the lifecycle of runtime sessions and resources in AgentCore Runtime. This configuration helps optimize resource utilization by automatically cleaning up idle sessions and preventing long-running instances from consuming resources indefinitely.
+
+
+
+
+                - **idleRuntimeSessionTimeout** *(integer) --*
+
+                  Timeout in seconds for idle runtime sessions. When a session remains idle for this duration, it will be automatically terminated. Default: 900 seconds (15 minutes).
+
+
+
+
+                - **maxLifetime** *(integer) --*
+
+                  Maximum lifetime for the instance in seconds. Once reached, instances will be automatically terminated and replaced. Default: 28800 seconds (8 hours).
+
+
+
+
+
+              - **networkConfiguration** *(dict) --*
+
+                SecurityConfig for the Agent.
+
+
+
+
+                - **networkMode** *(string) --*
+
+                  The network mode for the AgentCore Runtime.
+
+
+
+
+                - **networkModeConfig** *(dict) --*
+
+                  The network mode configuration for the AgentCore Runtime.
+
+
+
+
+                  - **securityGroups** *(list) --*
+
+                    The security groups associated with the VPC configuration.
+
+
+
+
+                    - *(string) --*
+
+
+
+                  - **subnets** *(list) --*
+
+                    The subnets associated with the VPC configuration.
+
+
+
+
+                    - *(string) --*
+
+
+
+                  - **requireServiceS3Endpoint** *(boolean) --*
+
+
+
+                    .. note::
+
+
+
+                      This field applies only to Agent Runtimes. It is not applicable to Browsers or Code Interpreters.
+
+
+
+
+
+                    Controls whether a service-managed Amazon S3 gateway endpoint is provisioned in the VPC network topology for the agent runtime. This gateway is used by Amazon Bedrock AgentCore Runtime to download code and container images during agent startup.
+
+
+
+                    Starting May 5, 2026, Amazon Bedrock AgentCore Runtime is gradually rolling out a change to how network isolation is configured for VPC mode agents. Agent runtimes created on or after this rollout will no longer include the service-managed Amazon S3 gateway. Instead, all network access, including to Amazon S3, is governed exclusively by your VPC configuration. This field cannot be set on agent runtimes created after the rollout. Passing this field in an ``UpdateAgentRuntime`` request for these agent runtimes returns a ``ValidationException``.
+
+
+
+                    Agent runtimes created before the rollout are not affected and continue to operate with the service-managed Amazon S3 gateway. To enforce full VPC network isolation on these existing agent runtimes, set this field to ``false`` via the ``UpdateAgentRuntime`` API. Before opting out, ensure your VPC provides the Amazon S3 access required for agent startup. If this field is not specified or is set to ``true``, the service-managed Amazon S3 gateway remains provisioned.
+
+
+
+                    This field is only supported in the ``UpdateAgentRuntime`` API for pre-rollout agent runtimes. Passing this field in a ``CreateAgentRuntime`` request returns a ``ValidationException``.
+
+
+
+
+
+
+
+
+              - **filesystemConfigurations** *(list) --*
+
+                The filesystem configurations for the runtime environment.
+
+
+
+
+                - *(dict) --*
+
+                  Configuration for a filesystem that can be mounted into the AgentCore Runtime.
+
+                  .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``sessionStorage``, ``s3FilesAccessPoint``, ``efsAccessPoint``, ``capacityProviderVolume``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                  - **sessionStorage** *(dict) --*
+
+                    Configuration for session storage. Session storage provides persistent storage that is preserved across AgentCore Runtime session invocations.
+
+
+
+
+                    - **mountPath** *(string) --*
+
+                      The mount path for the session storage filesystem inside the AgentCore Runtime. The path must be under ``/mnt`` with exactly one subdirectory level (for example, ``/mnt/data``).
+
+
+
+
+
+                  - **s3FilesAccessPoint** *(dict) --*
+
+                    Configuration for an Amazon S3 Files access point to mount into the AgentCore Runtime.
+
+
+
+
+                    - **accessPointArn** *(string) --*
+
+                      The ARN of the S3 Files access point to mount into the AgentCore Runtime.
+
+
+
+
+                    - **mountPath** *(string) --*
+
+                      The mount path for the S3 Files access point inside the AgentCore Runtime. The path must be under ``/mnt`` with exactly one subdirectory level (for example, ``/mnt/data``).
+
+
+
+
+
+                  - **efsAccessPoint** *(dict) --*
+
+                    Configuration for an Amazon EFS access point to mount into the AgentCore Runtime.
+
+
+
+
+                    - **accessPointArn** *(string) --*
+
+                      The ARN of the EFS access point to mount into the AgentCore Runtime.
+
+
+
+
+                    - **mountPath** *(string) --*
+
+                      The mount path for the EFS access point inside the AgentCore Runtime. The path must be under ``/mnt`` with exactly one subdirectory level (for example, ``/mnt/data``).
+
+
+
+
+
+                  - **capacityProviderVolume** *(dict) --*
+
+                    Configuration for a capacity provider volume to mount into the AgentCore Runtime. This mounts a persistent volume that is defined on the capacity provider, referenced by its logical name.
+
+
+
+
+                    - **volumeName** *(string) --*
+
+                      The logical name of the capacity provider volume to mount. This name must match a volume that is defined in the capacity provider's list of volumes.
+
+
+
+
+                    - **mountPath** *(string) --*
+
+                      The mount path for the capacity provider volume inside the AgentCore Runtime. The path must be under ``/mnt`` with exactly one subdirectory level (for example, ``/mnt/data``).
+
+
+
+
+
+
+
+
+
+          - **environmentArtifact** *(dict) --*
+
+            The environment artifact (e.g., container) in which the Harness operates.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``containerConfiguration``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                    'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+            - **containerConfiguration** *(dict) --*
+
+              Representation of a container configuration.
+
+
+
+
+              - **containerUri** *(string) --*
+
+                The ECR URI of the container.
+
+
+
+
+
+
+          - **environmentVariables** *(dict) --*
+
+            Environment variables exposed in the environment in which the harness operates.
+
+
+
+
+            - *(string) --*
+
+
+              - *(string) --*
+
+
+
+
+          - **authorizerConfiguration** *(dict) --*
+
+            Represents inbound authorization configuration options used to authenticate incoming requests.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``customJWTAuthorizer``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                    'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+            - **customJWTAuthorizer** *(dict) --*
+
+              The inbound JWT-based authorization, specifying how incoming requests should be authenticated.
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                This URL is used to fetch OpenID Connect configuration or authorization server metadata for validating incoming tokens.
+
+
+
+
+              - **allowedAudience** *(list) --*
+
+                Represents individual audience values that are validated in the incoming JWT token validation process.
+
+
+
+
+                - *(string) --*
+
+
+
+              - **allowedClients** *(list) --*
+
+                Represents individual client IDs that are validated in the incoming JWT token validation process.
+
+
+
+
+                - *(string) --*
+
+
+
+              - **allowedScopes** *(list) --*
+
+                An array of scopes that are allowed to access the token.
+
+
+
+
+                - *(string) --*
+
+
+
+              - **advertisedScopeMapping** *(dict) --*
+
+                A map that associates each scope in ``allowedScopes`` with a corresponding advertised scope value. The advertised scope appears in OAuth protected resource metadata and ``WWW-Authenticate`` response headers. Use this parameter when the scope that clients request from your identity provider differs from the scope in the validated token. Each key is a scope from ``allowedScopes`` that the service uses for token validation. Each value is the corresponding scope that the service advertises to clients. Scopes without a mapping entry appear unchanged to clients.
+
+
+
+
+                - *(string) --*
+
+
+                  - *(string) --*
+
+
+
+
+              - **customClaims** *(list) --*
+
+                An array of objects that define a custom claim validation name, value, and operation
+
+
+
+
+                - *(dict) --*
+
+                  Defines the name of a custom claim field and rules for finding matches to authenticate its value.
+
+
+
+
+                  - **inboundTokenClaimName** *(string) --*
+
+                    The name of the custom claim field to check.
+
+
+
+
+                  - **inboundTokenClaimValueType** *(string) --*
+
+                    The data type of the claim value to check for.
+
+
+
+
+                    * Use ``STRING`` if you want to find an exact match to a string you define.
+
+                    * Use ``STRING_ARRAY`` if you want to fnd a match to at least one value in an array you define.
+
+
+
+
+
+                  - **authorizingClaimMatchValue** *(dict) --*
+
+                    Defines the value or values to match for and the relationship of the match.
+
+
+
+
+                    - **claimMatchValue** *(dict) --*
+
+                      The value or values to match for.
+
+                      .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``matchValueString``, ``matchValueStringList``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                      - **matchValueString** *(string) --*
+
+                        The string value to match for.
+
+
+
+
+                      - **matchValueStringList** *(list) --*
+
+                        An array of strings to check for a match.
+
+
+
+
+                        - *(string) --*
+
+
+
+
+                    - **claimMatchOperator** *(string) --*
+
+                      Defines the relationship between the claim field value and the value or values you're matching for.
+
+
+
+
+
+
+
+              - **privateEndpoint** *(dict) --*
+
+                The private endpoint configuration for a gateway target. Defines how the gateway connects to private resources in your VPC.
+
+                .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``selfManagedLatticeResource``, ``managedVpcResource``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                            'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                - **selfManagedLatticeResource** *(dict) --*
+
+                  Configuration for connecting to a private resource using a self-managed VPC Lattice resource configuration.
+
+                  .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``resourceConfigurationIdentifier``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                  - **resourceConfigurationIdentifier** *(string) --*
+
+                    The ARN or ID of the VPC Lattice resource configuration.
+
+
+
+
+
+                - **managedVpcResource** *(dict) --*
+
+                  Configuration for connecting to a private resource using a managed VPC Lattice resource. The gateway creates and manages the VPC Lattice resources on your behalf.
+
+
+
+
+                  - **vpcIdentifier** *(string) --*
+
+                    The ID of the VPC that contains your private resource.
+
+
+
+
+                  - **subnetIds** *(list) --*
+
+                    The subnet IDs within the VPC where the VPC Lattice resource gateway is placed.
+
+
+
+
+                    - *(string) --*
+
+
+
+                  - **endpointIpAddressType** *(string) --*
+
+                    The IP address type for the resource configuration endpoint.
+
+
+
+
+                  - **securityGroupIds** *(list) --*
+
+                    The security group IDs to associate with the VPC Lattice resource gateway. If not specified, the default security group for the VPC is used.
+
+
+
+
+                    - *(string) --*
+
+
+
+                  - **tags** *(dict) --*
+
+                    Tags to apply to the managed VPC Lattice resource gateway.
+
+
+
+
+                    - *(string) --*
+
+
+                      - *(string) --*
+
+
+
+
+                  - **routingDomain** *(string) --*
+
+                    An intermediate domain to use as the resource configuration endpoint instead of the actual target domain. Use this when you want to route traffic through an intermediate component such as a VPC endpoint or internal load balancer. For more information, see xref:lattice-vpc-egress-routing-domain[Route traffic through an intermediate domain].
+
+
+
+
+
+
+              - **privateEndpointOverrides** *(list) --*
+
+                The private endpoint overrides for the custom JWT authorizer configuration.
+
+
+
+
+                - *(dict) --*
+
+                  A mapping of a specific domain to a private endpoint for secure connectivity through a VPC Lattice resource configuration.
+
+
+
+
+                  - **domain** *(string) --*
+
+                    The domain to override with a private endpoint.
+
+
+
+
+                  - **privateEndpoint** *(dict) --*
+
+                    The private endpoint configuration for the specified domain.
+
+                    .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``selfManagedLatticeResource``, ``managedVpcResource``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                    'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                    - **selfManagedLatticeResource** *(dict) --*
+
+                      Configuration for connecting to a private resource using a self-managed VPC Lattice resource configuration.
+
+                      .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``resourceConfigurationIdentifier``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                      - **resourceConfigurationIdentifier** *(string) --*
+
+                        The ARN or ID of the VPC Lattice resource configuration.
+
+
+
+
+
+                    - **managedVpcResource** *(dict) --*
+
+                      Configuration for connecting to a private resource using a managed VPC Lattice resource. The gateway creates and manages the VPC Lattice resources on your behalf.
+
+
+
+
+                      - **vpcIdentifier** *(string) --*
+
+                        The ID of the VPC that contains your private resource.
+
+
+
+
+                      - **subnetIds** *(list) --*
+
+                        The subnet IDs within the VPC where the VPC Lattice resource gateway is placed.
+
+
+
+
+                        - *(string) --*
+
+
+
+                      - **endpointIpAddressType** *(string) --*
+
+                        The IP address type for the resource configuration endpoint.
+
+
+
+
+                      - **securityGroupIds** *(list) --*
+
+                        The security group IDs to associate with the VPC Lattice resource gateway. If not specified, the default security group for the VPC is used.
+
+
+
+
+                        - *(string) --*
+
+
+
+                      - **tags** *(dict) --*
+
+                        Tags to apply to the managed VPC Lattice resource gateway.
+
+
+
+
+                        - *(string) --*
+
+
+                          - *(string) --*
+
+
+
+
+                      - **routingDomain** *(string) --*
+
+                        An intermediate domain to use as the resource configuration endpoint instead of the actual target domain. Use this when you want to route traffic through an intermediate component such as a VPC endpoint or internal load balancer. For more information, see xref:lattice-vpc-egress-routing-domain[Route traffic through an intermediate domain].
+
+
+
+
+
+
+
+
+              - **allowedWorkloadConfiguration** *(dict) --*
+
+                The configuration that restricts which workloads in the request's identity chain are allowed to invoke the target, identified by their hosting environments and workload identities. At launch, this is supported only for AgentCore Runtime targets, and the allowed workloads are AgentCore Gateways.
+
+
+
+
+                - **hostingEnvironments** *(list) --*
+
+                  The list of hosting environments whose workloads are allowed to invoke the target. At launch, the only supported hosting environment is AgentCore Gateway.
+
+
+
+
+                  - *(dict) --*
+
+                    A hosting environment whose workloads are allowed to invoke the target. At launch, the only supported hosting environment is AgentCore Gateway.
+
+
+
+
+                    - **arn** *(string) --*
+
+                      The Amazon Resource Name (ARN) of the hosting environment.
+
+
+
+
+
+
+                - **workloadIdentities** *(list) --*
+
+                  The list of workload identities that are allowed to invoke the target.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+
+          - **memory** *(dict) --*
+
+            AgentCore Memory instance configuration for short and long term memory.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``agentCoreMemoryConfiguration``, ``managedMemoryConfiguration``, ``disabled``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                    'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+            - **agentCoreMemoryConfiguration** *(dict) --*
+
+              The AgentCore Memory configuration.
+
+
+
+
+              - **arn** *(string) --*
+
+                The ARN of the AgentCore Memory resource.
+
+
+
+
+              - **actorId** *(string) --*
+
+                The actor ID for memory operations.
+
+
+
+
+              - **messagesCount** *(integer) --*
+
+                The number of messages to retrieve from memory.
+
+
+
+
+              - **retrievalConfig** *(dict) --*
+
+                The retrieval configuration for long-term memory, mapping namespace path templates to retrieval settings.
+
+
+
+
+                - *(string) --*
+
+
+                  - *(dict) --*
+
+                    Configuration for memory retrieval within a namespace.
+
+
+
+
+                    - **topK** *(integer) --*
+
+                      The maximum number of memory entries to retrieve.
+
+
+
+
+                    - **relevanceScore** *(float) --*
+
+                      The minimum relevance score for retrieved memories.
+
+
+
+
+                    - **strategyId** *(string) --*
+
+                      The ID of the retrieval strategy to use.
+
+
+
+
+
+
+
+
+            - **managedMemoryConfiguration** *(dict) --*
+
+              Harness creates and manages a memory resource in the customer's account.
+
+
+
+
+              - **arn** *(string) --*
+
+                The ARN of the managed AgentCore Memory resource. Read-only on Get, ignored on Create/Update input.
+
+
+
+
+              - **strategies** *(list) --*
+
+                Strategy types to enable. Defaults to [SEMANTIC, SUMMARIZATION].
+
+
+
+
+                - *(string) --*
+
+
+
+              - **eventExpiryDuration** *(integer) --*
+
+                Event retention in days. Defaults to 30.
+
+
+
+
+              - **encryptionKeyArn** *(string) --*
+
+                Customer-managed KMS key. Defaults to AWS-owned key. Not updatable after creation.
+
+
+
+
+
+            - **disabled** *(dict) --*
+
+              Explicitly opt out of memory.
+
+
+
+
+
+
+          - **maxIterations** *(integer) --*
+
+            The maximum number of iterations in the agent loop allowed before exiting per invocation.
+
+
+
+
+          - **maxTokens** *(integer) --*
+
+            The maximum total number of output tokens the agent can generate across all model calls within a single invocation.
+
+
+
+
+          - **timeoutSeconds** *(integer) --*
+
+            The maximum duration per invocation.
+
+
+
+
+          - **failureReason** *(string) --*
+
+            Reason why create or update operations fail.
+

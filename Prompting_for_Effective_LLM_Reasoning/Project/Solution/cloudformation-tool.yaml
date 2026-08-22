@@ -1,8 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >
-  Bug report tool for the AgentCore-based chatbot - DynamoDB table, Lambda
-  function, and the IAM roles used by the Lambda, the AgentCore Gateway,
-  and the AgentCore managed harness.
+  Bug report tool for the AgentCore-based chatbot - DynamoDB table, Lambda function, and the IAM roles used by the Lambda, the AgentCore Gateway, and the AgentCore managed harness.
 
 Resources:
 
@@ -12,11 +10,11 @@ Resources:
       TableName: bug-report-tool-stack-bug-reports
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
-        - AttributeName: ticketId
-          AttributeType: S
+      - AttributeName: ticketId
+        AttributeType: S
       KeySchema:
-        - AttributeName: ticketId
-          KeyType: HASH
+      - AttributeName: ticketId
+        KeyType: HASH
 
   LambdaExecutionRole:
     Type: AWS::IAM::Role
@@ -25,20 +23,20 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       Policies:
-        - PolicyName: DynamoDBPutItem
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action: dynamodb:PutItem
-                Resource: !GetAtt BugReportsTable.Arn
+      - PolicyName: DynamoDBPutItem
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action: dynamodb:PutItem
+            Resource: !GetAtt BugReportsTable.Arn
 
   CreateBugReportFunction:
     Type: AWS::Lambda::Function
@@ -100,18 +98,18 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Effect: Allow
-            Principal:
-              Service: bedrock-agentcore.amazonaws.com
-            Action: sts:AssumeRole
+        - Effect: Allow
+          Principal:
+            Service: bedrock-agentcore.amazonaws.com
+          Action: sts:AssumeRole
       Policies:
-        - PolicyName: InvokeLambdaTarget
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action: lambda:InvokeFunction
-                Resource: !GetAtt CreateBugReportFunction.Arn
+      - PolicyName: InvokeLambdaTarget
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action: lambda:InvokeFunction
+            Resource: !GetAtt CreateBugReportFunction.Arn
 
   # Assumed by the AgentCore managed harness so it can call Bedrock
   # models and invoke the gateway (and therefore the Lambda tool).
@@ -122,30 +120,38 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Effect: Allow
-            Principal:
-              Service: bedrock-agentcore.amazonaws.com
-            Action: sts:AssumeRole
+        - Effect: Allow
+          Principal:
+            Service: bedrock-agentcore.amazonaws.com
+          Action: sts:AssumeRole
       Policies:
-        - PolicyName: HarnessPermissions
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - bedrock:InvokeModel
-                  - bedrock:InvokeModelWithResponseStream
-                Resource: arn:aws:bedrock:us-east-1::foundation-model/us.amazon.nova-pro-v1:0
-              - Effect: Allow
-                Action:
-                  - bedrock-agentcore:InvokeGateway
-                Resource: "*"
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource: "*"
+      - PolicyName: HarnessPermissions
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - bedrock:InvokeModel
+            - bedrock:InvokeModelWithResponseStream
+            Resource:
+            - arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-pro-v1:0
+            - arn:aws:bedrock:us-east-2::foundation-model/amazon.nova-pro-v1:0
+            - arn:aws:bedrock:us-west-2::foundation-model/amazon.nova-pro-v1:0
+            - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/us.amazon.nova-pro-v1:0
+          - Effect: Allow
+            Action:
+            - bedrock-agentcore:*
+            Resource: "*"
+          - Effect: Allow
+            Action:
+            - secretsmanager:GetSecretValue
+            Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:bedrock-agentcore-identity!default/oauth2/*
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource: "*"
 
 Outputs:
   BugReportsTableName:

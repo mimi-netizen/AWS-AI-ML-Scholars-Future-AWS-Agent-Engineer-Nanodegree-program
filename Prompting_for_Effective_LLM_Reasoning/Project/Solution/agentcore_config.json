@@ -1,0 +1,21 @@
+{
+  "region": "us-east-1",
+  "gateway_id": "bug-report-gateway-jtm5mmaxes",
+  "gateway_url": "https://bug-report-gateway-jtm5mmaxes.gateway.bedrock-agentcore.us-east-1.amazonaws.com/mcp",
+  "gateway_role_arn": "arn:aws:iam::728319584873:role/bug-report-tool-stack-gateway-role",
+  "target_id": "LTIUU4FISI",
+  "target_name": "bugreports",
+  "client_info": {
+    "client_id": "41giuobkbdm1nccafo1nv1sl0n",
+    "client_secret": "3hdv01v6ibhj6e6gg73r394b59aeb8rps9n8u9lobsghglro4cd",
+    "user_pool_id": "us-east-1_TAQPInzqP",
+    "token_endpoint": "https://agentcore-ac8e80e8.auth.us-east-1.amazoncognito.com/oauth2/token",
+    "scope": "bug-report-gateway/invoke",
+    "domain_prefix": "agentcore-ac8e80e8"
+  },
+  "harness_role_arn": "arn:aws:iam::728319584873:role/bug-report-tool-stack-harness-role",
+  "lambda_arn": "arn:aws:lambda:us-east-1:728319584873:function:bug-report-tool-stack-create-bug-report",
+  "harness_arn": "arn:aws:bedrock-agentcore:us-east-1:728319584873:harness/bug_report_chatbot-m4XsviVKqL",
+  "credential_provider_arn": "arn:aws:bedrock-agentcore:us-east-1:728319584873:token-vault/default/oauth2credentialprovider/bug-report-harness-auth",
+  "oauth_scope": "bug-report-gateway/invoke"
+}

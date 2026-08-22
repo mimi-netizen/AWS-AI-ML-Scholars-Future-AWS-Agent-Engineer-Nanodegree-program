@@ -1,0 +1,2533 @@
+Help on method create_oauth2_credential_provider in module botocore.client:
+
+create_oauth2_credential_provider(*args, **kwargs) method of botocore.client.BedrockAgentCoreControl instance
+    Creates a new OAuth2 credential provider.
+
+
+
+    See also: `AWS API Documentation <https://docs.aws.amazon.com/goto/WebAPI/bedrock-agentcore-control-2023-06-05/CreateOauth2CredentialProvider>`_
+
+
+    **Request Syntax**
+    ::
+
+      response = client.create_oauth2_credential_provider(
+          name='string',
+          credentialProviderVendor='GoogleOauth2'|'GithubOauth2'|'SlackOauth2'|'SalesforceOauth2'|'MicrosoftOauth2'|'CustomOauth2'|'AtlassianOauth2'|'LinkedinOauth2'|'XOauth2'|'OktaOauth2'|'OneLoginOauth2'|'PingOneOauth2'|'FacebookOauth2'|'YandexOauth2'|'RedditOauth2'|'ZoomOauth2'|'TwitchOauth2'|'SpotifyOauth2'|'DropboxOauth2'|'NotionOauth2'|'HubspotOauth2'|'CyberArkOauth2'|'FusionAuthOauth2'|'Auth0Oauth2'|'CognitoOauth2',
+          oauth2ProviderConfigInput={
+              'customOauth2ProviderConfig': {
+                  'oauthDiscovery': {
+                      'discoveryUrl': 'string',
+                      'authorizationServerMetadata': {
+                          'issuer': 'string',
+                          'authorizationEndpoint': 'string',
+                          'tokenEndpoint': 'string',
+                          'responseTypes': [
+                              'string',
+                          ],
+                          'tokenEndpointAuthMethods': [
+                              'string',
+                          ]
+                      }
+                  },
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL',
+                  'onBehalfOfTokenExchangeConfig': {
+                      'grantType': 'TOKEN_EXCHANGE'|'JWT_AUTHORIZATION_GRANT',
+                      'tokenExchangeGrantTypeConfig': {
+                          'actorTokenContent': 'NONE'|'M2M'|'AWS_IAM_ID_TOKEN_JWT',
+                          'actorTokenScopes': [
+                              'string',
+                          ]
+                      }
+                  },
+                  'clientAuthenticationMethod': 'CLIENT_SECRET_BASIC'|'CLIENT_SECRET_POST'|'AWS_IAM_ID_TOKEN_JWT'|'PRIVATE_KEY_JWT',
+                  'privateKeyJwtConfig': {
+                      'privateKeySource': {
+                          'kmsKeySource': {
+                              'kmsKeyArn': 'string'
+                          }
+                      },
+                      'signingAlgorithm': 'RS256'|'PS256'|'ES256',
+                      'additionalHeaderClaims': {
+                          'string': 'string'
+                      },
+                      'additionalPayloadClaims': {
+                          'string': 'string'
+                      }
+                  },
+                  'privateEndpoint': {
+                      'selfManagedLatticeResource': {
+                          'resourceConfigurationIdentifier': 'string'
+                      },
+                      'managedVpcResource': {
+                          'vpcIdentifier': 'string',
+                          'subnetIds': [
+                              'string',
+                          ],
+                          'endpointIpAddressType': 'IPV4'|'IPV6',
+                          'securityGroupIds': [
+                              'string',
+                          ],
+                          'tags': {
+                              'string': 'string'
+                          },
+                          'routingDomain': 'string'
+                      }
+                  },
+                  'privateEndpointOverrides': [
+                      {
+                          'domain': 'string',
+                          'privateEndpoint': {
+                              'selfManagedLatticeResource': {
+                                  'resourceConfigurationIdentifier': 'string'
+                              },
+                              'managedVpcResource': {
+                                  'vpcIdentifier': 'string',
+                                  'subnetIds': [
+                                      'string',
+                                  ],
+                                  'endpointIpAddressType': 'IPV4'|'IPV6',
+                                  'securityGroupIds': [
+                                      'string',
+                                  ],
+                                  'tags': {
+                                      'string': 'string'
+                                  },
+                                  'routingDomain': 'string'
+                              }
+                          }
+                      },
+                  ]
+              },
+              'googleOauth2ProviderConfig': {
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL'
+              },
+              'githubOauth2ProviderConfig': {
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL'
+              },
+              'slackOauth2ProviderConfig': {
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL'
+              },
+              'salesforceOauth2ProviderConfig': {
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL'
+              },
+              'microsoftOauth2ProviderConfig': {
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL',
+                  'tenantId': 'string'
+              },
+              'atlassianOauth2ProviderConfig': {
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL'
+              },
+              'linkedinOauth2ProviderConfig': {
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL'
+              },
+              'includedOauth2ProviderConfig': {
+                  'clientId': 'string',
+                  'clientSecret': 'string',
+                  'clientSecretConfig': {
+                      'secretId': 'string',
+                      'jsonKey': 'string'
+                  },
+                  'clientSecretSource': 'MANAGED'|'EXTERNAL',
+                  'issuer': 'string',
+                  'authorizationEndpoint': 'string',
+                  'tokenEndpoint': 'string'
+              }
+          },
+          tags={
+              'string': 'string'
+          }
+      )
+
+    :type name: string
+    :param name: **[REQUIRED]**
+
+      The name of the OAuth2 credential provider. The name must be unique within your account.
+
+
+
+
+    :type credentialProviderVendor: string
+    :param credentialProviderVendor: **[REQUIRED]**
+
+      The vendor of the OAuth2 credential provider. This specifies which OAuth2 implementation to use.
+
+
+
+
+    :type oauth2ProviderConfigInput: dict
+    :param oauth2ProviderConfigInput: **[REQUIRED]**
+
+      The configuration settings for the OAuth2 provider, including client ID, client secret, and other vendor-specific settings.
+
+      .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``customOauth2ProviderConfig``, ``googleOauth2ProviderConfig``, ``githubOauth2ProviderConfig``, ``slackOauth2ProviderConfig``, ``salesforceOauth2ProviderConfig``, ``microsoftOauth2ProviderConfig``, ``atlassianOauth2ProviderConfig``, ``linkedinOauth2ProviderConfig``, ``includedOauth2ProviderConfig``.
+
+
+      - **customOauth2ProviderConfig** *(dict) --*
+
+        The configuration for a custom OAuth2 provider.
+
+
+
+
+        - **oauthDiscovery** *(dict) --* **[REQUIRED]**
+
+          The OAuth2 discovery information for the custom provider.
+
+          .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``discoveryUrl``, ``authorizationServerMetadata``.
+
+
+          - **discoveryUrl** *(string) --*
+
+            The discovery URL for the OAuth2 provider.
+
+
+
+
+          - **authorizationServerMetadata** *(dict) --*
+
+            The authorization server metadata for the OAuth2 provider.
+
+
+
+
+            - **issuer** *(string) --* **[REQUIRED]**
+
+              The issuer URL for the OAuth2 authorization server.
+
+
+
+
+            - **authorizationEndpoint** *(string) --* **[REQUIRED]**
+
+              The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+            - **tokenEndpoint** *(string) --* **[REQUIRED]**
+
+              The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+            - **responseTypes** *(list) --*
+
+              The supported response types for the OAuth2 authorization server.
+
+
+
+
+              - *(string) --*
+
+
+
+            - **tokenEndpointAuthMethods** *(list) --*
+
+              The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+              - *(string) --*
+
+
+
+
+
+        - **clientId** *(string) --*
+
+          The client ID for the custom OAuth2 provider.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the custom OAuth2 provider.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+        - **onBehalfOfTokenExchangeConfig** *(dict) --*
+
+          The configuration for on-behalf-of token exchange. This enables authentication flows that use RFC 8693 token exchange or RFC 7523 JWT authorization grants.
+
+
+
+
+          - **grantType** *(string) --* **[REQUIRED]**
+
+            The grant type for the on-behalf-of token exchange.
+
+
+
+
+          - **tokenExchangeGrantTypeConfig** *(dict) --*
+
+            Configuration specific to the TOKEN_EXCHANGE grant type (RFC 8693).
+
+
+
+
+            - **actorTokenContent** *(string) --* **[REQUIRED]**
+
+              The content type for the actor token in the token exchange.
+
+
+
+
+            - **actorTokenScopes** *(list) --*
+
+              The scopes for the actor token. Only valid when actorTokenContent is M2M.
+
+
+
+
+              - *(string) --*
+
+
+
+
+
+        - **clientAuthenticationMethod** *(string) --*
+
+          The client authentication method to use when authenticating with the token endpoint.
+
+
+
+
+        - **privateKeyJwtConfig** *(dict) --*
+
+          The private_key_jwt client authentication configuration for this credential provider. When specified, the credential provider uses JWT client assertions to authenticate with the token endpoint.
+
+
+
+
+          - **privateKeySource** *(dict) --*
+
+            The private key source for the JWT client assertion.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``kmsKeySource``.
+
+
+            - **kmsKeySource** *(dict) --*
+
+              The KMS key source for the JWT client assertion.
+
+
+
+
+              - **kmsKeyArn** *(string) --* **[REQUIRED]**
+
+                The Amazon Resource Name (ARN) of the KMS key used to sign the JWT client assertion. The key must be an asymmetric key with key usage SIGN_VERIFY and a key spec compatible with the configured signing algorithm.
+
+
+
+
+
+
+          - **signingAlgorithm** *(string) --*
+
+            The algorithm used to sign the JWT client assertion. Valid values are ``RS256``, ``PS256``, and ``ES256``.
+
+
+
+
+          - **additionalHeaderClaims** *(dict) --*
+
+            A map of additional claims to include in the JWT client assertion header. Standard header claims such as ``alg`` and ``typ`` cannot be added.
+
+
+
+
+            - *(string) --*
+
+
+              - *(string) --*
+
+
+
+
+          - **additionalPayloadClaims** *(dict) --*
+
+            A map of additional claims to include in the JWT client assertion payload. Payload claims generated by the service, such as ``iss``, ``sub``, ``jti``, and ``exp``, cannot be added.
+
+
+
+
+            - *(string) --*
+
+
+              - *(string) --*
+
+
+
+
+
+        - **privateEndpoint** *(dict) --*
+
+          The default private endpoint for the custom OAuth2 provider, enabling secure connectivity through a VPC Lattice resource configuration.
+
+          .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``selfManagedLatticeResource``, ``managedVpcResource``.
+
+
+          - **selfManagedLatticeResource** *(dict) --*
+
+            Configuration for connecting to a private resource using a self-managed VPC Lattice resource configuration.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``resourceConfigurationIdentifier``.
+
+
+            - **resourceConfigurationIdentifier** *(string) --*
+
+              The ARN or ID of the VPC Lattice resource configuration.
+
+
+
+
+
+          - **managedVpcResource** *(dict) --*
+
+            Configuration for connecting to a private resource using a managed VPC Lattice resource. The gateway creates and manages the VPC Lattice resources on your behalf.
+
+
+
+
+            - **vpcIdentifier** *(string) --* **[REQUIRED]**
+
+              The ID of the VPC that contains your private resource.
+
+
+
+
+            - **subnetIds** *(list) --* **[REQUIRED]**
+
+              The subnet IDs within the VPC where the VPC Lattice resource gateway is placed.
+
+
+
+
+              - *(string) --*
+
+
+
+            - **endpointIpAddressType** *(string) --* **[REQUIRED]**
+
+              The IP address type for the resource configuration endpoint.
+
+
+
+
+            - **securityGroupIds** *(list) --*
+
+              The security group IDs to associate with the VPC Lattice resource gateway. If not specified, the default security group for the VPC is used.
+
+
+
+
+              - *(string) --*
+
+
+
+            - **tags** *(dict) --*
+
+              Tags to apply to the managed VPC Lattice resource gateway.
+
+
+
+
+              - *(string) --*
+
+
+                - *(string) --*
+
+
+
+
+            - **routingDomain** *(string) --*
+
+              An intermediate domain to use as the resource configuration endpoint instead of the actual target domain. Use this when you want to route traffic through an intermediate component such as a VPC endpoint or internal load balancer. For more information, see xref:lattice-vpc-egress-routing-domain[Route traffic through an intermediate domain].
+
+
+
+
+
+
+        - **privateEndpointOverrides** *(list) --*
+
+          The private endpoint overrides for the custom OAuth2 provider configuration.
+
+
+
+
+          - *(dict) --*
+
+            A mapping of a specific domain to a private endpoint for secure connectivity through a VPC Lattice resource configuration.
+
+
+
+
+            - **domain** *(string) --* **[REQUIRED]**
+
+              The domain to override with a private endpoint.
+
+
+
+
+            - **privateEndpoint** *(dict) --* **[REQUIRED]**
+
+              The private endpoint configuration for the specified domain.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``selfManagedLatticeResource``, ``managedVpcResource``.
+
+
+              - **selfManagedLatticeResource** *(dict) --*
+
+                Configuration for connecting to a private resource using a self-managed VPC Lattice resource configuration.
+
+                .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``resourceConfigurationIdentifier``.
+
+
+                - **resourceConfigurationIdentifier** *(string) --*
+
+                  The ARN or ID of the VPC Lattice resource configuration.
+
+
+
+
+
+              - **managedVpcResource** *(dict) --*
+
+                Configuration for connecting to a private resource using a managed VPC Lattice resource. The gateway creates and manages the VPC Lattice resources on your behalf.
+
+
+
+
+                - **vpcIdentifier** *(string) --* **[REQUIRED]**
+
+                  The ID of the VPC that contains your private resource.
+
+
+
+
+                - **subnetIds** *(list) --* **[REQUIRED]**
+
+                  The subnet IDs within the VPC where the VPC Lattice resource gateway is placed.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **endpointIpAddressType** *(string) --* **[REQUIRED]**
+
+                  The IP address type for the resource configuration endpoint.
+
+
+
+
+                - **securityGroupIds** *(list) --*
+
+                  The security group IDs to associate with the VPC Lattice resource gateway. If not specified, the default security group for the VPC is used.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tags** *(dict) --*
+
+                  Tags to apply to the managed VPC Lattice resource gateway.
+
+
+
+
+                  - *(string) --*
+
+
+                    - *(string) --*
+
+
+
+
+                - **routingDomain** *(string) --*
+
+                  An intermediate domain to use as the resource configuration endpoint instead of the actual target domain. Use this when you want to route traffic through an intermediate component such as a VPC endpoint or internal load balancer. For more information, see xref:lattice-vpc-egress-routing-domain[Route traffic through an intermediate domain].
+
+
+
+
+
+
+
+
+
+      - **googleOauth2ProviderConfig** *(dict) --*
+
+        The configuration for a Google OAuth2 provider.
+
+
+
+
+        - **clientId** *(string) --* **[REQUIRED]**
+
+          The client ID for the Google OAuth2 provider.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the Google OAuth2 provider.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+
+      - **githubOauth2ProviderConfig** *(dict) --*
+
+        The configuration for a GitHub OAuth2 provider.
+
+
+
+
+        - **clientId** *(string) --* **[REQUIRED]**
+
+          The client ID for the GitHub OAuth2 provider.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the GitHub OAuth2 provider.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+
+      - **slackOauth2ProviderConfig** *(dict) --*
+
+        The configuration for a Slack OAuth2 provider.
+
+
+
+
+        - **clientId** *(string) --* **[REQUIRED]**
+
+          The client ID for the Slack OAuth2 provider.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the Slack OAuth2 provider.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+
+      - **salesforceOauth2ProviderConfig** *(dict) --*
+
+        The configuration for a Salesforce OAuth2 provider.
+
+
+
+
+        - **clientId** *(string) --* **[REQUIRED]**
+
+          The client ID for the Salesforce OAuth2 provider.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the Salesforce OAuth2 provider.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+
+      - **microsoftOauth2ProviderConfig** *(dict) --*
+
+        The configuration for a Microsoft OAuth2 provider.
+
+
+
+
+        - **clientId** *(string) --* **[REQUIRED]**
+
+          The client ID for the Microsoft OAuth2 provider.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the Microsoft OAuth2 provider.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+        - **tenantId** *(string) --*
+
+          The Microsoft Entra ID (formerly Azure AD) tenant ID for your organization. This identifies the specific tenant within Microsoft's identity platform where your application is registered.
+
+
+
+
+
+      - **atlassianOauth2ProviderConfig** *(dict) --*
+
+        Configuration settings for Atlassian OAuth2 provider integration.
+
+
+
+
+        - **clientId** *(string) --* **[REQUIRED]**
+
+          The client ID for the Atlassian OAuth2 provider. This identifier is assigned by Atlassian when you register your application.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the Atlassian OAuth2 provider. This secret is assigned by Atlassian and used along with the client ID to authenticate your application.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret for the Atlassian OAuth2 provider. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+
+      - **linkedinOauth2ProviderConfig** *(dict) --*
+
+        Configuration settings for LinkedIn OAuth2 provider integration.
+
+
+
+
+        - **clientId** *(string) --* **[REQUIRED]**
+
+          The client ID for the LinkedIn OAuth2 provider. This identifier is assigned by LinkedIn when you register your application.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the LinkedIn OAuth2 provider. This secret is assigned by LinkedIn and used along with the client ID to authenticate your application.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+
+      - **includedOauth2ProviderConfig** *(dict) --*
+
+        The configuration for a non-custom OAuth2 provider. This includes settings for supported OAuth2 providers that have built-in integration support.
+
+
+
+
+        - **clientId** *(string) --* **[REQUIRED]**
+
+          The client ID for the supported OAuth2 provider. This identifier is assigned by the OAuth2 provider when you register your application.
+
+
+
+
+        - **clientSecret** *(string) --*
+
+          The client secret for the supported OAuth2 provider. This secret is assigned by the OAuth2 provider and used along with the client ID to authenticate your application.
+
+
+
+
+        - **clientSecretConfig** *(dict) --*
+
+          A reference to the Amazon Web Services Secrets Manager secret that stores the client secret. This includes the secret ID and the JSON key used to extract the client secret value from the secret. Required when ``clientSecretSource`` is set to ``EXTERNAL``.
+
+
+
+
+          - **secretId** *(string) --* **[REQUIRED]**
+
+            The ID of the Amazon Web Services Secrets Manager secret that stores the secret value.
+
+
+
+
+          - **jsonKey** *(string) --* **[REQUIRED]**
+
+            The JSON key used to extract the secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Use ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if you manage the secret yourself in Amazon Web Services Secrets Manager.
+
+
+
+
+        - **issuer** *(string) --*
+
+          Token issuer of your isolated OAuth2 application tenant. This URL identifies the authorization server that issues tokens for this provider.
+
+
+
+
+        - **authorizationEndpoint** *(string) --*
+
+          OAuth2 authorization endpoint for your isolated OAuth2 application tenant. This is where users are redirected to authenticate and authorize access to their resources.
+
+
+
+
+        - **tokenEndpoint** *(string) --*
+
+          OAuth2 token endpoint for your isolated OAuth2 application tenant. This is where authorization codes are exchanged for access tokens.
+
+
+
+
+
+
+    :type tags: dict
+    :param tags:
+
+      A map of tag keys and values to assign to the OAuth2 credential provider. Tags enable you to categorize your resources in different ways, for example, by purpose, owner, or environment.
+
+
+
+
+      - *(string) --*
+
+
+        - *(string) --*
+
+
+
+
+
+    :rtype: dict
+    :returns:
+
+      **Response Syntax**
+
+
+      ::
+
+        {
+            'clientSecretArn': {
+                'secretArn': 'string'
+            },
+            'clientSecretJsonKey': 'string',
+            'clientSecretSource': 'MANAGED'|'EXTERNAL',
+            'name': 'string',
+            'credentialProviderArn': 'string',
+            'callbackUrl': 'string',
+            'oauth2ProviderConfigOutput': {
+                'customOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string',
+                    'onBehalfOfTokenExchangeConfig': {
+                        'grantType': 'TOKEN_EXCHANGE'|'JWT_AUTHORIZATION_GRANT',
+                        'tokenExchangeGrantTypeConfig': {
+                            'actorTokenContent': 'NONE'|'M2M'|'AWS_IAM_ID_TOKEN_JWT',
+                            'actorTokenScopes': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientAuthenticationMethod': 'CLIENT_SECRET_BASIC'|'CLIENT_SECRET_POST'|'AWS_IAM_ID_TOKEN_JWT'|'PRIVATE_KEY_JWT',
+                    'privateEndpoint': {
+                        'selfManagedLatticeResource': {
+                            'resourceConfigurationIdentifier': 'string'
+                        },
+                        'managedVpcResource': {
+                            'vpcIdentifier': 'string',
+                            'subnetIds': [
+                                'string',
+                            ],
+                            'endpointIpAddressType': 'IPV4'|'IPV6',
+                            'securityGroupIds': [
+                                'string',
+                            ],
+                            'tags': {
+                                'string': 'string'
+                            },
+                            'routingDomain': 'string'
+                        }
+                    },
+                    'privateEndpointOverrides': [
+                        {
+                            'domain': 'string',
+                            'privateEndpoint': {
+                                'selfManagedLatticeResource': {
+                                    'resourceConfigurationIdentifier': 'string'
+                                },
+                                'managedVpcResource': {
+                                    'vpcIdentifier': 'string',
+                                    'subnetIds': [
+                                        'string',
+                                    ],
+                                    'endpointIpAddressType': 'IPV4'|'IPV6',
+                                    'securityGroupIds': [
+                                        'string',
+                                    ],
+                                    'tags': {
+                                        'string': 'string'
+                                    },
+                                    'routingDomain': 'string'
+                                }
+                            }
+                        },
+                    ],
+                    'privateKeyJwtConfig': {
+                        'privateKeySource': {
+                            'kmsKeySource': {
+                                'kmsKeyArn': 'string'
+                            }
+                        },
+                        'signingAlgorithm': 'RS256'|'PS256'|'ES256',
+                        'additionalHeaderClaims': {
+                            'string': 'string'
+                        },
+                        'additionalPayloadClaims': {
+                            'string': 'string'
+                        }
+                    }
+                },
+                'googleOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string'
+                },
+                'githubOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string'
+                },
+                'slackOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string'
+                },
+                'salesforceOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string'
+                },
+                'microsoftOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string'
+                },
+                'atlassianOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string'
+                },
+                'linkedinOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string'
+                },
+                'includedOauth2ProviderConfig': {
+                    'oauthDiscovery': {
+                        'discoveryUrl': 'string',
+                        'authorizationServerMetadata': {
+                            'issuer': 'string',
+                            'authorizationEndpoint': 'string',
+                            'tokenEndpoint': 'string',
+                            'responseTypes': [
+                                'string',
+                            ],
+                            'tokenEndpointAuthMethods': [
+                                'string',
+                            ]
+                        }
+                    },
+                    'clientId': 'string'
+                }
+            },
+            'status': 'CREATING'|'CREATE_FAILED'|'UPDATING'|'UPDATE_FAILED'|'READY'|'DELETING'|'DELETE_FAILED'
+        }
+
+      **Response Structure**
+
+
+
+      - *(dict) --*
+
+
+        - **clientSecretArn** *(dict) --*
+
+          The Amazon Resource Name (ARN) of the client secret in Amazon Web Services Secrets Manager.
+
+
+
+
+          - **secretArn** *(string) --*
+
+            The Amazon Resource Name (ARN) of the secret in Amazon Web Services Secrets Manager.
+
+
+
+
+
+        - **clientSecretJsonKey** *(string) --*
+
+          The JSON key used to extract the client secret value from the Amazon Web Services Secrets Manager secret.
+
+
+
+
+        - **clientSecretSource** *(string) --*
+
+          The source type of the client secret. Either ``MANAGED`` if the secret is managed by the service, or ``EXTERNAL`` if managed by the user in Amazon Web Services Secrets Manager.
+
+
+
+
+        - **name** *(string) --*
+
+          The name of the OAuth2 credential provider.
+
+
+
+
+        - **credentialProviderArn** *(string) --*
+
+          The Amazon Resource Name (ARN) of the OAuth2 credential provider.
+
+
+
+
+        - **callbackUrl** *(string) --*
+
+          Callback URL to register on the OAuth2 credential provider as an allowed callback URL. This URL is where the OAuth2 authorization server redirects users after they complete the authorization flow.
+
+
+
+
+        - **oauth2ProviderConfigOutput** *(dict) --*
+
+          Contains the output configuration for an OAuth2 provider.
+
+          .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``customOauth2ProviderConfig``, ``googleOauth2ProviderConfig``, ``githubOauth2ProviderConfig``, ``slackOauth2ProviderConfig``, ``salesforceOauth2ProviderConfig``, ``microsoftOauth2ProviderConfig``, ``atlassianOauth2ProviderConfig``, ``linkedinOauth2ProviderConfig``, ``includedOauth2ProviderConfig``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+          - **customOauth2ProviderConfig** *(dict) --*
+
+            The output configuration for a custom OAuth2 provider.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              The OAuth2 discovery information for the custom provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the custom OAuth2 provider.
+
+
+
+
+            - **onBehalfOfTokenExchangeConfig** *(dict) --*
+
+              The configuration for on-behalf-of token exchange.
+
+
+
+
+              - **grantType** *(string) --*
+
+                The grant type for the on-behalf-of token exchange.
+
+
+
+
+              - **tokenExchangeGrantTypeConfig** *(dict) --*
+
+                Configuration specific to the TOKEN_EXCHANGE grant type (RFC 8693).
+
+
+
+
+                - **actorTokenContent** *(string) --*
+
+                  The content type for the actor token in the token exchange.
+
+
+
+
+                - **actorTokenScopes** *(list) --*
+
+                  The scopes for the actor token. Only valid when actorTokenContent is M2M.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientAuthenticationMethod** *(string) --*
+
+              The client authentication method used when authenticating with the token endpoint.
+
+
+
+
+            - **privateEndpoint** *(dict) --*
+
+              The default private endpoint for the custom OAuth2 provider, enabling secure connectivity through a VPC Lattice resource configuration.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``selfManagedLatticeResource``, ``managedVpcResource``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **selfManagedLatticeResource** *(dict) --*
+
+                Configuration for connecting to a private resource using a self-managed VPC Lattice resource configuration.
+
+                .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``resourceConfigurationIdentifier``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                            'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                - **resourceConfigurationIdentifier** *(string) --*
+
+                  The ARN or ID of the VPC Lattice resource configuration.
+
+
+
+
+
+              - **managedVpcResource** *(dict) --*
+
+                Configuration for connecting to a private resource using a managed VPC Lattice resource. The gateway creates and manages the VPC Lattice resources on your behalf.
+
+
+
+
+                - **vpcIdentifier** *(string) --*
+
+                  The ID of the VPC that contains your private resource.
+
+
+
+
+                - **subnetIds** *(list) --*
+
+                  The subnet IDs within the VPC where the VPC Lattice resource gateway is placed.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **endpointIpAddressType** *(string) --*
+
+                  The IP address type for the resource configuration endpoint.
+
+
+
+
+                - **securityGroupIds** *(list) --*
+
+                  The security group IDs to associate with the VPC Lattice resource gateway. If not specified, the default security group for the VPC is used.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tags** *(dict) --*
+
+                  Tags to apply to the managed VPC Lattice resource gateway.
+
+
+
+
+                  - *(string) --*
+
+
+                    - *(string) --*
+
+
+
+
+                - **routingDomain** *(string) --*
+
+                  An intermediate domain to use as the resource configuration endpoint instead of the actual target domain. Use this when you want to route traffic through an intermediate component such as a VPC endpoint or internal load balancer. For more information, see xref:lattice-vpc-egress-routing-domain[Route traffic through an intermediate domain].
+
+
+
+
+
+
+            - **privateEndpointOverrides** *(list) --*
+
+              The private endpoint overrides for the custom OAuth2 provider configuration.
+
+
+
+
+              - *(dict) --*
+
+                A mapping of a specific domain to a private endpoint for secure connectivity through a VPC Lattice resource configuration.
+
+
+
+
+                - **domain** *(string) --*
+
+                  The domain to override with a private endpoint.
+
+
+
+
+                - **privateEndpoint** *(dict) --*
+
+                  The private endpoint configuration for the specified domain.
+
+                  .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``selfManagedLatticeResource``, ``managedVpcResource``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                  - **selfManagedLatticeResource** *(dict) --*
+
+                    Configuration for connecting to a private resource using a self-managed VPC Lattice resource configuration.
+
+                    .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``resourceConfigurationIdentifier``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                    'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                    - **resourceConfigurationIdentifier** *(string) --*
+
+                      The ARN or ID of the VPC Lattice resource configuration.
+
+
+
+
+
+                  - **managedVpcResource** *(dict) --*
+
+                    Configuration for connecting to a private resource using a managed VPC Lattice resource. The gateway creates and manages the VPC Lattice resources on your behalf.
+
+
+
+
+                    - **vpcIdentifier** *(string) --*
+
+                      The ID of the VPC that contains your private resource.
+
+
+
+
+                    - **subnetIds** *(list) --*
+
+                      The subnet IDs within the VPC where the VPC Lattice resource gateway is placed.
+
+
+
+
+                      - *(string) --*
+
+
+
+                    - **endpointIpAddressType** *(string) --*
+
+                      The IP address type for the resource configuration endpoint.
+
+
+
+
+                    - **securityGroupIds** *(list) --*
+
+                      The security group IDs to associate with the VPC Lattice resource gateway. If not specified, the default security group for the VPC is used.
+
+
+
+
+                      - *(string) --*
+
+
+
+                    - **tags** *(dict) --*
+
+                      Tags to apply to the managed VPC Lattice resource gateway.
+
+
+
+
+                      - *(string) --*
+
+
+                        - *(string) --*
+
+
+
+
+                    - **routingDomain** *(string) --*
+
+                      An intermediate domain to use as the resource configuration endpoint instead of the actual target domain. Use this when you want to route traffic through an intermediate component such as a VPC endpoint or internal load balancer. For more information, see xref:lattice-vpc-egress-routing-domain[Route traffic through an intermediate domain].
+
+
+
+
+
+
+
+
+            - **privateKeyJwtConfig** *(dict) --*
+
+              The configuration for private_key_jwt client authentication used by this OAuth2 credential provider.
+
+
+
+
+              - **privateKeySource** *(dict) --*
+
+                The private key source for the JWT client assertion.
+
+                .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``kmsKeySource``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                            'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                - **kmsKeySource** *(dict) --*
+
+                  The KMS key source for the JWT client assertion.
+
+
+
+
+                  - **kmsKeyArn** *(string) --*
+
+                    The Amazon Resource Name (ARN) of the KMS key used to sign the JWT client assertion. The key must be an asymmetric key with key usage SIGN_VERIFY and a key spec compatible with the configured signing algorithm.
+
+
+
+
+
+
+              - **signingAlgorithm** *(string) --*
+
+                The algorithm used to sign the JWT client assertion. Valid values are ``RS256``, ``PS256``, and ``ES256``.
+
+
+
+
+              - **additionalHeaderClaims** *(dict) --*
+
+                A map of additional claims to include in the JWT client assertion header. Standard header claims such as ``alg`` and ``typ`` cannot be added.
+
+
+
+
+                - *(string) --*
+
+
+                  - *(string) --*
+
+
+
+
+              - **additionalPayloadClaims** *(dict) --*
+
+                A map of additional claims to include in the JWT client assertion payload. Payload claims generated by the service, such as ``iss``, ``sub``, ``jti``, and ``exp``, cannot be added.
+
+
+
+
+                - *(string) --*
+
+
+                  - *(string) --*
+
+
+
+
+
+
+          - **googleOauth2ProviderConfig** *(dict) --*
+
+            The output configuration for a Google OAuth2 provider.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              The OAuth2 discovery information for the Google provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the Google OAuth2 provider.
+
+
+
+
+
+          - **githubOauth2ProviderConfig** *(dict) --*
+
+            The output configuration for a GitHub OAuth2 provider.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              The OAuth2 discovery information for the GitHub provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the GitHub OAuth2 provider.
+
+
+
+
+
+          - **slackOauth2ProviderConfig** *(dict) --*
+
+            The output configuration for a Slack OAuth2 provider.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              The OAuth2 discovery information for the Slack provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the Slack OAuth2 provider.
+
+
+
+
+
+          - **salesforceOauth2ProviderConfig** *(dict) --*
+
+            The output configuration for a Salesforce OAuth2 provider.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              The OAuth2 discovery information for the Salesforce provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the Salesforce OAuth2 provider.
+
+
+
+
+
+          - **microsoftOauth2ProviderConfig** *(dict) --*
+
+            The output configuration for a Microsoft OAuth2 provider.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              The OAuth2 discovery information for the Microsoft provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the Microsoft OAuth2 provider.
+
+
+
+
+
+          - **atlassianOauth2ProviderConfig** *(dict) --*
+
+            The configuration details for the Atlassian OAuth2 provider.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              Contains the discovery information for an OAuth2 provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the Atlassian OAuth2 provider.
+
+
+
+
+
+          - **linkedinOauth2ProviderConfig** *(dict) --*
+
+            The configuration details for the LinkedIn OAuth2 provider.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              Contains the discovery information for an OAuth2 provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the LinkedIn OAuth2 provider.
+
+
+
+
+
+          - **includedOauth2ProviderConfig** *(dict) --*
+
+            The configuration for a non-custom OAuth2 provider. This includes the configuration details for supported OAuth2 providers that have built-in integration support.
+
+
+
+
+            - **oauthDiscovery** *(dict) --*
+
+              Contains the discovery information for an OAuth2 provider.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``discoveryUrl``, ``authorizationServerMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **discoveryUrl** *(string) --*
+
+                The discovery URL for the OAuth2 provider.
+
+
+
+
+              - **authorizationServerMetadata** *(dict) --*
+
+                The authorization server metadata for the OAuth2 provider.
+
+
+
+
+                - **issuer** *(string) --*
+
+                  The issuer URL for the OAuth2 authorization server.
+
+
+
+
+                - **authorizationEndpoint** *(string) --*
+
+                  The authorization endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **tokenEndpoint** *(string) --*
+
+                  The token endpoint URL for the OAuth2 authorization server.
+
+
+
+
+                - **responseTypes** *(list) --*
+
+                  The supported response types for the OAuth2 authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **tokenEndpointAuthMethods** *(list) --*
+
+                  The authentication methods supported by the token endpoint. This specifies how clients can authenticate when requesting tokens from the authorization server.
+
+
+
+
+                  - *(string) --*
+
+
+
+
+
+            - **clientId** *(string) --*
+
+              The client ID for the supported OAuth2 provider.
+
+
+
+
+
+
+        - **status** *(string) --*
+
+          The current status of the OAuth2 credential provider.
+

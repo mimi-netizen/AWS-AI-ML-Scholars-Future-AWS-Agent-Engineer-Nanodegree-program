@@ -425,11 +425,223 @@ Steps:
 ![AWS DynamoDB console showing a Get live item count dialog for the bug-report-tool-stack-bug-reports table. The dialog explains that choosing Start scan performs a DynamoDB scan and may consume additional read capacity units, with a yellow warning that the action is not recommended for very large or critical-production tables. The results show Item count 1, Scan status Complete, and Last updated August 22, 2026 17:03:03. The dialog has Scan again and Cancel buttons. Behind it, the dark AWS console shows the selected table, the Explore table items button, and table status Active.](image-59.png)
 
 
+No — those are two different sections of the doc entirely, and I should have been clearer about that. What I gave you last was only the **Step 3 (Testing)** rewrite. The `setup_gateway.py` work belongs under **Revised Step 2**, as its own subsection — 2.2.4, coming right after 2.2.3 (DynamoDB verification) which you already completed.
+
+Here's that piece, to insert between 2.2.3 and the Step 3 block I gave you:
+
+
+### 2.2.4 Create the AgentCore Gateway (setup_gateway.py)
+
+`setup_gateway.py` reads the bug-report-tool-stack CloudFormation outputs directly (no copy-pasting), creates a Cognito OAuth authorizer, creates the AgentCore Gateway, and registers the create-bug-report Lambda as a tool target named `bugreports` — so the model will see it as the tool `bugreports___create_bug_report`. Config is saved to `agentcore_config.json` for the next steps to read.
+
+Pre-flight checks before running:
+```bash
+pip show bedrock-agentcore-starter-toolkit
+python -c "from bedrock_agentcore_starter_toolkit.operations.gateway.client import GatewayClient; help(GatewayClient.create_mcp_gateway_target)"
+```
+Compare the printed signature against what the script assumes, and add `bedrock-agentcore-starter-toolkit` to `requirements.txt` if missing before running `pip install -r requirements.txt`.
+
+![VS Code terminal showing pre-flight checks for the AgentCore Gateway setup. The terminal displays pip show bedrock-agentcore-starter-toolkit with version 0.3.12 installed, followed by a help command for GatewayClient.create_mcp_gateway_target that is stopped before producing output. The prompt is ready for the next command. The surrounding dark-themed VS Code window shows the Solution project files in the Explorer, including requirements.txt and gateway-related scripts. The scene is informational and task-focused.](image-60.png)
+
+Run:
+```bash
+python setup_gateway.py
+```
+
+Expected output: gateway ID, gateway URL, target ID printed to console, and `agentcore_config.json` written to disk.
+
+![VS Code terminal showing a failed run of python setup_gateway.py in the Solution project. The terminal reports that the script is reading outputs from stack bug-report-tool-stack and then fails with an AccessDenied error because the assumed role is not authorized to perform cloudformation:DescribeStacks on the bug-report-tool-stack resource. The dark VS Code window includes the project Explorer and an idle shell prompt after the traceback. Visible text includes python setup_gateway.py, Reading outputs from stack: bug-report-tool-stack, Traceback, AccessDenied, DescribeStacks, and the project path. The tone is diagnostic and task-focused.](image-61.png)
+
+![VS Code terminal showing AWS credentials configured and the caller identity verified. The terminal displays masked AWS access and secret keys, a masked session token, default region name us-east-1, default output format None, and the command aws sts get-caller-identity returning a JSON response with UserId, Account, and Arn fields. The surrounding dark-themed VS Code window shows the Solution project in the Explorer and an idle shell prompt. The tone is technical and task-focused.](image-62.png)
+
+![VS Code terminal in a dark theme showing a successful AgentCore Gateway setup for the bug-report project. The command python setup_gateway.py is running, and the output lists reading CloudFormation outputs from the bug-report-tool-stack stack, creating a Cognito OAuth authorizer, creating the gateway, and reporting the gateway URL. The terminal then shows the gateway ready message and the final values for the gateway ID and target ID, with the project Explorer visible in the background. The tone is technical, task-focused, and successful. Text visible includes python setup_gateway.py, bug-report-tool-stack, Gateway, URL, Gateway ID, and Target ID.](image-63.png)
+
+![VS Code terminal in a dark theme showing the final successful AgentCore Gateway configuration. The output confirms the gateway was created, the target was registered, and the model-facing tool name is bugreports___create_bug_report. The surrounding editor shows the Solution project in the Explorer, and the overall tone is successful and operational. Text visible includes Gateway ID, Target ID, and Tool name exposed to model: bugreports___create_bug_report.](image-64.png)
+
+```
+Gateway ID: bug-report-gateway-jtm5mmaxes
+Target ID: LTIUU4FISI
+Tool will appear to the model as: bugreports___create_bug_report
+```
+### 2.2.5 Create the harness and update system_prompt.txt binding
+
+`create_harness.py` reads `system_prompt.txt`, substitutes the `{{FAQ}}` placeholder with `online_shop_faq.md`'s contents, and calls the AgentCore Control Plane's CreateHarness (or UpdateHarness, if a harness already exists) to stand up the chatbot, wired to the Gateway created in 2.2.4.
+
+**Known risk before running:** the exact shape of the `tools` array entry for an `agentcore_gateway` tool type was inferred from documentation prose, not a confirmed code example (unlike the Gateway/Lambda target shape in 2.2.4, which was verified against source code before running). This call may fail on a parameter-name mismatch.
+
+Pre-flight:
+```bash
+python -c "import boto3; c = boto3.client('bedrock-agentcore-control', region_name='us-east-1'); help(c.create_harness)"
+```
+
+Run:
+```bash
+python create_harness.py
+```
+
+Expected output: harness ARN, polling status until READY, confirmation message, `agentcore_config.json` updated with `harness_arn`.
+
+![VS Code terminal showing the create_harness.py script creating a bug report chatbot harness. The terminal displays repeated CREATING statuses followed by READY, then confirms Harness ready with the ARN arn:aws:bedrock-agentcore:us-east-1:728319584873:harness/bug_report_chatbot-m4Xsv​​iVKqL, and prompts the user to run python chat.py next. The VS Code Explorer is visible on the left in the Solution project. The overall tone is successful and operational.](image-65.png)
+
+```
+Harness ARN: arn:aws:bedrock-agentcore:us-east-1:728319584873:harness/bug_report_chatbot-m4XsviVKqL
+Harness ready: arn:aws:bedrock-agentcore:us-east-1:728319584873:harness/bug_report_chatbot-m4XsviVKqL
+```
+
+### 2.2.6 Chat with the harness (chat.py)
+
+`chat.py` opens a fresh multi-turn session against the harness and streams responses in the terminal. Tool calls print as `[tool call] <name>` when the model invokes create_bug_report.
+
+Run:
+```bash
+python chat.py
+```
+
+![VS Code terminal in the Solution project showing python chat.py after the user enters my checkout page keeps crashing. The terminal displays a session ID and the prompt Type your message, or exit to quit, followed by a traceback from chat.py and botocore. The error says InvokeHarness failed because the bugreports tool could not start its MCP client and the gateway returned 401 Unauthorized. The shell prompt is visible below the error, and the Explorer at left lists project files. The technical scene conveys an authentication or authorization failure.](image-66.png)
+
+![VS Code terminal showing setup_harness_auth.py successfully creating the OAuth2 credential provider bug-report-harness-auth. The terminal displays the discovery URL, provider ARN, a message that credential_provider_arn was saved to agentcore_config.json, and the instruction to rerun create_harness.py. The shell prompt is visible in the Solution project, with the WSL terminal environment selected on the right. The operational setup appears successful.](image-67.png)
+
+![VS Code WSL terminal showing a successful create_harness.py run. The terminal reports Updating existing harness, then Waiting for harness to be ready with statuses UPDATING, UPDATING, and READY, followed by Harness ready and the ARN arn:aws:bedrock-agentcore:us-east-1:728319584873:harness/bug_report_chatbot-m4XsviVKqL. It prompts Next: python chat.py. The Solution project files are visible in the Explorer on the left, and the overall tone is successful and operational.](image-68.png)
+
+![A dark themed VS Code terminal in the Solution project shows a live chat session with the bug report harness. The user prompt is my checkout page keeps crashing, and the assistant responds by reasoning through the issue, then invokes the bugreports tool as [tool call] bugreports create_bug_report to gather missing details. The terminal displays the session ID, the prompt Type your message, or exit to quit, and the follow-up question Could you please provide more details? What steps do you take before the checkout page crashes? Also, what browser, operating system, and device are you using? The wider environment includes the project explorer on the left and a calm, focused troubleshooting workflow.](image-69.png)
+
+![VS Code WSL terminal showing a completed bug report chat for my checkout page keeps crashing. The terminal displays the session prompt Type your message, or exit to quit, the users details about entering card details with Chrome on Windows 11 using a Dell device, a successful bugreports__create_bug_report tool call, and the assistant confirmation that ticket 1ed96710-1d70-4bec-8b43-4432cf14f67c was created. The Solution project files are visible in the Explorer on the left. The successful troubleshooting exchange has a focused, reassuring tone.](image-70.png)
+
+Verify the DynamoDB write — same check as before, confirm ticket 1ed96710-1d70-4bec-8b43-4432cf14f67c actually landed in bug-report-tool-stack-bug-reports.
+
+`aws dynamodb scan --table-name bug-report-tool-stack-bug-reports --region us-east-1`
+
+![VS Code WSL terminal running aws dynamodb scan --table-name bug-report-tool-stack-bug-reports --region us-east-1. The JSON output shows ticket 1ed96710-1d70-4bec-8b43-4432cf14f67c with status OPEN, description Checkout page keeps crashing, steps to reproduce Trying to input card details, and environment Chrome browser on Windows 11, Dell device. More DynamoDB records continue below, while the Solution project files are visible in the Explorer on the left. The successful verification has a technical, reassuring tone.](image-71.png)
+
+```
+(venv) celyne@Celyne:/mnt/c/Users/Administrator/Desktop/AWS AI & ML Scholars Future AWS Agent Engineer Nanodegree/Prompting_for_Effective_LLM_Reasoning/Project/Solution$ aws dynamodb scan --table-name bug-report-tool-stack-bug-reports --region us-east-1
+{
+    "Items": [
+        {
+            "environment": {
+                "S": "Chrome browser on Windows 11, Dell device"
+            },
+            "createdAt": {
+                "S": "2026-08-22T15:43:39.844506+00:00"
+            },
+            "stepsToReproduce": {
+                "S": "Trying to input card details"
+            },
+            "description": {
+                "S": "Checkout page keeps crashing"
+            },
+            "ticketId": {
+                "S": "1ed96710-1d70-4bec-8b43-4432cf14f67c"
+            },
+            "status": {
+                "S": "OPEN"
+            }
+        },
+        {
+            "environment": {
+                "S": "Chrome 120 on macOS Sonoma"
+            },
+            "createdAt": {
+                "S": "2026-08-22T13:59:16.800524+00:00"
+            },
+            "stepsToReproduce": {
+                "S": "1. Add an item to the cart. 2. Go to checkout. 3. Click Pay."
+            },
+            "description": {
+                "S": "The checkout page crashes when I click the Pay button"
+:
+{
+    "Items": [
+        {
+            "environment": {
+:
+    "Items": [
+        {
+            "environment": {
+                "S": "Chrome browser on Windows 11, Dell device"
+            },
+            "createdAt": {
+                "S": "2026-08-22T15:43:39.844506+00:00"
+            },
+            "stepsToReproduce": {
+                "S": "Trying to input card details"
+            },
+            "description": {
+                "S": "Checkout page keeps crashing"
+            },
+            "ticketId": {
+                "S": "1ed96710-1d70-4bec-8b43-4432cf14f67c"
+            },
+            "status": {
+                "S": "OPEN"
+            }
+        },
+        {
+            "environment": {
+                "S": "Chrome 120 on macOS Sonoma"
+            },
+            "createdAt": {
+                "S": "2026-08-22T13:59:16.800524+00:00"
+            },
+            "stepsToReproduce": {
+                "S": "1. Add an item to the cart. 2. Go to checkout. 3. Click Pay."
+            },
+            "description": {
+                "S": "The checkout page crashes when I click the Pay button"
+            },
+:
+    "Items": [
+        {
+            "environment": {
+:
+    "Items": [
+        {
+            "environment": {
+                "S": "Chrome browser on Windows 11, Dell device"
+            },
+            "createdAt": {
+                "S": "2026-08-22T15:43:39.844506+00:00"
+            },
+            "stepsToReproduce": {
+                "S": "Trying to input card details"
+            },
+            "description": {
+                "S": "Checkout page keeps crashing"
+            },
+            "ticketId": {
+                "S": "1ed96710-1d70-4bec-8b43-4432cf14f67c"
+            },
+            "status": {
+                "S": "OPEN"
+            }
+        },
+        {
+            "environment": {
+                "S": "Chrome 120 on macOS Sonoma"
+            },
+            "createdAt": {
+                "S": "2026-08-22T13:59:16.800524+00:00"
+            },
+            "stepsToReproduce": {
+                "S": "1. Add an item to the cart. 2. Go to checkout. 3. Click Pay."
+            },
+            "description": {
+                "S": "The checkout page crashes when I click the Pay button"
+         
+```
+
 ## Step 3: Testing and Evaluation
+
+Per the Environment Setup page: Bedrock Evaluations itself is unaffected by the Agents Classic → AgentCore change. What changes is how the dataset gets generated — testing now runs against the harness (via chat.py / InvokeHarness), not a Bedrock Flow, so the test file and generation script are different.
+
+### 3.0 Outstanding files needed before this step
+
+- [ ] `harness-tests.json` — copy from `harness-tests-template.json` once available; same structure as the old `flow-tests.json` (id / prompt / expected) but no `flowInputNode` field since there's no Flow
+- [ ] `generate-eval-dataset.py` needs rewriting to call `InvokeHarness` instead of `InvokeFlow` — the version in the original repo calls `bedrock-agent-runtime.invoke_flow()`, which no longer applies
 
 ### 3.1 Test suite
 
-`flow-tests.json` — see file in submission. Covers:
+`harness-tests.json` — see file in submission. Covers:
 - [ ] At least 1 bug report test
 - [ ] At least 1 platform question test
 - [ ] At least 1 other-request test
@@ -437,18 +649,19 @@ Steps:
 - [ ] Stand-out: very short message
 - [ ] Stand-out: prompt injection attempt
 
-### 3.2 Flow alias
+### 3.2 Harness reference
 
-Flow ID: `<paste>`
-Alias ID: `<paste>` (name: `v1`)
+Harness ID: `<paste>`
+Harness ARN: `<paste>`
+
+(No Flow ID/alias this time — the harness itself is the invocable resource, created directly by `create_harness.py`, no separate alias step.)
 
 ### 3.3 Run generate-eval-dataset.py
 
 ```bash
 python generate-eval-dataset.py \
-  --tests-json flow-tests.json \
-  --flow-id <flow-id> \
-  --flow-alias-id <alias-id> \
+  --tests-json harness-tests.json \
+  --harness-arn <harness-arn> \
   --region us-east-1
 ```
 
@@ -469,13 +682,15 @@ Outputs: `EvalDatasetBucketName`, `BedrockEvalRoleArn`
 <paste here>
 ```
 
+Note: `cloudformation-testing.yaml` itself is unchanged from the original — no AgentCore-specific resources needed for evaluation.
+
 ### 3.5 Upload dataset and create evaluation job
 
 ```bash
 aws s3 cp output_eval_dataset.jsonl s3://<bucket-name>/output_eval_dataset.jsonl --region us-east-1
 
 aws bedrock create-evaluation-job \
-  --job-name flow-eval-run-1 \
+  --job-name harness-eval-run-1 \
   ...
 ```
 
@@ -487,11 +702,13 @@ aws bedrock create-evaluation-job \
 
 ### 3.7 Written observations
 
-- Are all three branches producing reasonable responses?
+- Are all three routes (bug report / platform question / other) producing reasonable responses?
   - _(answer)_
-- Any misrouted prompts (e.g. bug report getting the "call support" response)?
+- Any misrouted prompts (e.g. bug report getting the phone-redirect response)?
   - _(answer)_
 - Are FAQ answers relevant to the actual question asked?
+  - _(answer)_
+- Did the bug-report route correctly collect all three required fields before calling the tool?
   - _(answer)_
 - Any cases where the response was correct but the judge model scored it low? Why?
   - _(answer)_
@@ -502,12 +719,12 @@ aws bedrock create-evaluation-job \
 
 ## Stand-Out Suggestions Implemented
 
-- [ ] Guardrail blocking harmful content / prompt injection
-- [ ] Edge-case test prompts (ambiguous / short / injection)
-- [ ] Bedrock Knowledge Base replacing embedded FAQ
-- [ ] Structured output for classifier
+- [ ] Edge-case test prompts (ambiguous / short / prompt injection)
+- [ ] Hardened system prompt against injection (e.g. instructions that survive "ignore your previous instructions")
+- [ ] Multi-turn bug-report test scripted in chat.py, ticket fields verified against DynamoDB
+- [ ] Extended FAQ with custom entries, verified no redeploy needed beyond re-running create_harness.py
 
-_(describe implementation for each checked item)_
+_(describe implementation for each checked item — note this list changed from the original Bedrock Flow rubric's stand-outs, since guardrails/Knowledge Base/structured-output classifier don't apply to this architecture)_
 
 ---
 
@@ -516,9 +733,10 @@ _(describe implementation for each checked item)_
 ```bash
 aws s3 rm s3://<bucket-name> --recursive --region us-east-1
 aws cloudformation delete-stack --stack-name bug-report-testing-stack --region us-east-1
+python cleanup_agentcore.py
 aws cloudformation delete-stack --stack-name bug-report-tool-stack --region us-east-1
 ```
 
-- [ ] Flow deleted via console
-- [ ] Agent deleted via console
-- [ ] Both stacks confirmed deleted
+- [ ] Harness deleted (via `cleanup_agentcore.py`)
+- [ ] Gateway and gateway target deleted (via `cleanup_agentcore.py`)
+- [ ] Both CloudFormation stacks confirmed deleted
