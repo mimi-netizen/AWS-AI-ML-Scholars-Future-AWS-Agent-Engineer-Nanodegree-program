@@ -1,0 +1,72 @@
+Help on method delete_gateway in module botocore.client:
+
+delete_gateway(*args, **kwargs) method of botocore.client.BedrockAgentCoreControl instance
+    Deletes a gateway.
+
+
+
+    See also: `AWS API Documentation <https://docs.aws.amazon.com/goto/WebAPI/bedrock-agentcore-control-2023-06-05/DeleteGateway>`_
+
+
+    **Request Syntax**
+    ::
+
+      response = client.delete_gateway(
+          gatewayIdentifier='string'
+      )
+
+    :type gatewayIdentifier: string
+    :param gatewayIdentifier: **[REQUIRED]**
+
+      The identifier of the gateway to delete.
+
+
+
+
+
+    :rtype: dict
+    :returns:
+
+      **Response Syntax**
+
+
+      ::
+
+        {
+            'gatewayId': 'string',
+            'status': 'CREATING'|'UPDATING'|'UPDATE_UNSUCCESSFUL'|'DELETING'|'READY'|'FAILED',
+            'statusReasons': [
+                'string',
+            ]
+        }
+
+      **Response Structure**
+
+
+
+      - *(dict) --*
+
+
+        - **gatewayId** *(string) --*
+
+          The unique identifier of the deleted gateway.
+
+
+
+
+        - **status** *(string) --*
+
+          The current status of the gateway deletion.
+
+
+
+
+        - **statusReasons** *(list) --*
+
+          The reasons for the current status of the gateway deletion.
+
+
+
+
+          - *(string) --*
+

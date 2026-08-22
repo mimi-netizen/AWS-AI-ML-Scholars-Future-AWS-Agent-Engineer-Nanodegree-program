@@ -1,0 +1,42 @@
+Help on method delete_oauth2_credential_provider in module botocore.client:
+
+delete_oauth2_credential_provider(*args, **kwargs) method of botocore.client.BedrockAgentCoreControl instance
+    Deletes an OAuth2 credential provider.
+
+
+
+    See also: `AWS API Documentation <https://docs.aws.amazon.com/goto/WebAPI/bedrock-agentcore-control-2023-06-05/DeleteOauth2CredentialProvider>`_
+
+
+    **Request Syntax**
+    ::
+
+      response = client.delete_oauth2_credential_provider(
+          name='string'
+      )
+
+    :type name: string
+    :param name: **[REQUIRED]**
+
+      The name of the OAuth2 credential provider to delete.
+
+
+
+
+
+    :rtype: dict
+    :returns:
+
+      **Response Syntax**
+
+
+      ::
+
+        {}
+
+      **Response Structure**
+
+
+
+      - *(dict) --*
+

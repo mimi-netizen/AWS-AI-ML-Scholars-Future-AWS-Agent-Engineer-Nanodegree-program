@@ -1,0 +1,93 @@
+Help on method delete_gateway_target in module botocore.client:
+
+delete_gateway_target(*args, **kwargs) method of botocore.client.BedrockAgentCoreControl instance
+    Deletes a gateway target.
+
+
+
+    You cannot delete a target that is in a pending authorization state ( ``CREATE_PENDING_AUTH``, ``UPDATE_PENDING_AUTH``, or ``SYNCHRONIZE_PENDING_AUTH``). Wait for the authorization to complete or fail before deleting the target.
+
+
+
+    See also: `AWS API Documentation <https://docs.aws.amazon.com/goto/WebAPI/bedrock-agentcore-control-2023-06-05/DeleteGatewayTarget>`_
+
+
+    **Request Syntax**
+    ::
+
+      response = client.delete_gateway_target(
+          gatewayIdentifier='string',
+          targetId='string'
+      )
+
+    :type gatewayIdentifier: string
+    :param gatewayIdentifier: **[REQUIRED]**
+
+      The unique identifier of the gateway associated with the target.
+
+
+
+
+    :type targetId: string
+    :param targetId: **[REQUIRED]**
+
+      The unique identifier of the gateway target to delete.
+
+
+
+
+
+    :rtype: dict
+    :returns:
+
+      **Response Syntax**
+
+
+      ::
+
+        {
+            'gatewayArn': 'string',
+            'targetId': 'string',
+            'status': 'CREATING'|'UPDATING'|'UPDATE_UNSUCCESSFUL'|'DELETING'|'READY'|'FAILED'|'SYNCHRONIZING'|'SYNCHRONIZE_UNSUCCESSFUL'|'CREATE_PENDING_AUTH'|'UPDATE_PENDING_AUTH'|'SYNCHRONIZE_PENDING_AUTH',
+            'statusReasons': [
+                'string',
+            ]
+        }
+
+      **Response Structure**
+
+
+
+      - *(dict) --*
+
+
+        - **gatewayArn** *(string) --*
+
+          The Amazon Resource Name (ARN) of the gateway.
+
+
+
+
+        - **targetId** *(string) --*
+
+          The unique identifier of the deleted gateway target.
+
+
+
+
+        - **status** *(string) --*
+
+          The current status of the gateway target deletion.
+
+
+
+
+        - **statusReasons** *(list) --*
+
+          The reasons for the current status of the gateway target deletion.
+
+
+
+
+          - *(string) --*
+

@@ -81,6 +81,7 @@ def main():
             systemPrompt=[{"text": system_prompt}],
             model={"bedrockModelConfig": {"modelId": MODEL_ID}},
             tools=tools,
+            memory={"optionalValue": {"disabled": {}}},
         )
         harness_arn = existing_arn
     else:
@@ -91,6 +92,7 @@ def main():
             systemPrompt=[{"text": system_prompt}],
             model={"bedrockModelConfig": {"modelId": MODEL_ID}},
             tools=tools,
+            memory={"disabled": {}},
         )
         harness_arn = resp["harness"]["arn"]
         print(f"  Harness ARN: {harness_arn}")

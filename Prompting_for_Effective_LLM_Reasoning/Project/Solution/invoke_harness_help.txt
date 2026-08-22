@@ -1,0 +1,1543 @@
+Help on method invoke_harness in module botocore.client:
+
+invoke_harness(*args, **kwargs) method of botocore.client.BedrockAgentCore instance
+    Operation to invoke a Harness.
+
+
+
+    See also: `AWS API Documentation <https://docs.aws.amazon.com/goto/WebAPI/bedrock-agentcore-2024-02-28/InvokeHarness>`_
+
+
+    **Request Syntax**
+    ::
+
+      response = client.invoke_harness(
+          harnessArn='string',
+          qualifier='string',
+          runtimeSessionId='string',
+          runtimeUserId='string',
+          traceParent='string',
+          traceState='string',
+          traceId='string',
+          baggage='string',
+          messages=[
+              {
+                  'role': 'user'|'assistant',
+                  'content': [
+                      {
+                          'text': 'string',
+                          'toolUse': {
+                              'name': 'string',
+                              'toolUseId': 'string',
+                              'input': {...}|[...]|123|123.4|'string'|True|None,
+                              'type': 'tool_use'|'server_tool_use'|'mcp_tool_use',
+                              'serverName': 'string'
+                          },
+                          'toolResult': {
+                              'toolUseId': 'string',
+                              'content': [
+                                  {
+                                      'text': 'string',
+                                      'json': {...}|[...]|123|123.4|'string'|True|None
+                                  },
+                              ],
+                              'status': 'success'|'error',
+                              'type': 'tool_use'|'server_tool_use'|'mcp_tool_use'
+                          },
+                          'reasoningContent': {
+                              'reasoningText': {
+                                  'text': 'string',
+                                  'signature': 'string'
+                              },
+                              'redactedContent': b'bytes'
+                          }
+                      },
+                  ]
+              },
+          ],
+          model={
+              'bedrockModelConfig': {
+                  'modelId': 'string',
+                  'maxTokens': 123,
+                  'temperature': ...,
+                  'topP': ...,
+                  'apiFormat': 'converse_stream'|'responses'|'chat_completions',
+                  'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+              },
+              'openAiModelConfig': {
+                  'modelId': 'string',
+                  'apiKeyArn': 'string',
+                  'maxTokens': 123,
+                  'temperature': ...,
+                  'topP': ...,
+                  'apiFormat': 'chat_completions'|'responses',
+                  'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+              },
+              'geminiModelConfig': {
+                  'modelId': 'string',
+                  'apiKeyArn': 'string',
+                  'maxTokens': 123,
+                  'temperature': ...,
+                  'topP': ...,
+                  'topK': 123,
+                  'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+              },
+              'liteLlmModelConfig': {
+                  'modelId': 'string',
+                  'apiKeyArn': 'string',
+                  'apiBase': 'string',
+                  'maxTokens': 123,
+                  'temperature': ...,
+                  'topP': ...,
+                  'additionalParams': {...}|[...]|123|123.4|'string'|True|None
+              }
+          },
+          systemPrompt=[
+              {
+                  'text': 'string'
+              },
+          ],
+          tools=[
+              {
+                  'type': 'remote_mcp'|'agentcore_browser'|'agentcore_gateway'|'inline_function'|'agentcore_code_interpreter',
+                  'name': 'string',
+                  'config': {
+                      'remoteMcp': {
+                          'url': 'string',
+                          'headers': {
+                              'string': 'string'
+                          }
+                      },
+                      'agentCoreBrowser': {
+                          'browserArn': 'string'
+                      },
+                      'agentCoreGateway': {
+                          'gatewayArn': 'string',
+                          'outboundAuth': {
+                              'awsIam': {}
+                              ,
+                              'none': {}
+                              ,
+                              'oauth': {
+                                  'providerArn': 'string',
+                                  'scopes': [
+                                      'string',
+                                  ],
+                                  'customParameters': {
+                                      'string': 'string'
+                                  },
+                                  'grantType': 'CLIENT_CREDENTIALS'|'AUTHORIZATION_CODE'|'TOKEN_EXCHANGE',
+                                  'defaultReturnUrl': 'string'
+                              }
+                          }
+                      },
+                      'inlineFunction': {
+                          'description': 'string',
+                          'inputSchema': {...}|[...]|123|123.4|'string'|True|None
+                      },
+                      'agentCoreCodeInterpreter': {
+                          'codeInterpreterArn': 'string'
+                      }
+                  }
+              },
+          ],
+          skills=[
+              {
+                  'path': 'string',
+                  's3': {
+                      'uri': 'string'
+                  },
+                  'git': {
+                      'url': 'string',
+                      'path': 'string',
+                      'auth': {
+                          'credentialArn': 'string',
+                          'username': 'string'
+                      }
+                  },
+                  'awsSkills': {
+                      'paths': [
+                          'string',
+                      ]
+                  }
+              },
+          ],
+          allowedTools=[
+              'string',
+          ],
+          maxIterations=123,
+          maxTokens=123,
+          timeoutSeconds=123,
+          actorId='string'
+      )
+
+    :type harnessArn: string
+    :param harnessArn: **[REQUIRED]**
+
+      The ARN of the harness to invoke.
+
+
+
+
+    :type qualifier: string
+    :param qualifier:
+
+      The endpoint name to invoke. If omitted, the DEFAULT endpoint is used.
+
+
+
+
+    :type runtimeSessionId: string
+    :param runtimeSessionId: **[REQUIRED]**
+
+      The session ID for the invocation. Use the same session ID across requests to continue a conversation.
+
+
+
+
+    :type runtimeUserId: string
+    :param runtimeUserId:
+
+      An identifier for the end user making the request. This value is passed through to the runtime container.
+
+
+
+
+    :type traceParent: string
+    :param traceParent:
+
+      W3C trace context parent header containing version, trace ID, parent span ID, and trace flags.
+
+
+
+
+    :type traceState: string
+    :param traceState:
+
+      W3C trace context state header for vendor-specific trace information.
+
+
+
+
+    :type traceId: string
+    :param traceId:
+
+      Trace ID for maintaining observability through the operation.
+
+
+
+
+    :type baggage: string
+    :param baggage:
+
+      W3C Baggage header for user-defined context propagation. Format: key1=value1,key2=value2
+
+
+
+
+    :type messages: list
+    :param messages: **[REQUIRED]**
+
+      The messages to send to the agent.
+
+
+
+
+      - *(dict) --*
+
+        A message in the conversation.
+
+
+
+
+        - **role** *(string) --* **[REQUIRED]**
+
+          The role of the message sender.
+
+
+
+
+        - **content** *(list) --* **[REQUIRED]**
+
+          The content blocks of the message.
+
+
+
+
+          - *(dict) --*
+
+            A content block within a message.
+
+            .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``text``, ``toolUse``, ``toolResult``, ``reasoningContent``.
+
+
+            - **text** *(string) --*
+
+              Text content.
+
+
+
+
+            - **toolUse** *(dict) --*
+
+              A tool use request from the model.
+
+
+
+
+              - **name** *(string) --* **[REQUIRED]**
+
+                The name of the tool to call.
+
+
+
+
+              - **toolUseId** *(string) --* **[REQUIRED]**
+
+                The unique ID of this tool use.
+
+
+
+
+              - **input** (:ref:`document<document>`) -- **[REQUIRED]**
+
+                The JSON input to pass to the tool.
+
+
+
+
+              - **type** *(string) --*
+
+                The type of tool use.
+
+
+
+
+              - **serverName** *(string) --*
+
+                The name of the MCP server providing this tool.
+
+
+
+
+
+            - **toolResult** *(dict) --*
+
+              A tool execution result.
+
+
+
+
+              - **toolUseId** *(string) --* **[REQUIRED]**
+
+                The tool use ID that this result corresponds to.
+
+
+
+
+              - **content** *(list) --* **[REQUIRED]**
+
+                The content of the tool result.
+
+
+
+
+                - *(dict) --*
+
+                  A content block within a tool result.
+
+                  .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``text``, ``json``.
+
+
+                  - **text** *(string) --*
+
+                    Text content.
+
+
+
+
+                  - **json** (:ref:`document<document>`) --
+
+                    JSON content.
+
+
+
+
+
+
+              - **status** *(string) --*
+
+                The status of the tool execution.
+
+
+
+
+              - **type** *(string) --*
+
+                The type of tool use that produced this result.
+
+
+
+
+
+            - **reasoningContent** *(dict) --*
+
+              Model reasoning content.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``reasoningText``, ``redactedContent``.
+
+
+              - **reasoningText** *(dict) --*
+
+                The reasoning text.
+
+
+
+
+                - **text** *(string) --* **[REQUIRED]**
+
+                  The reasoning text.
+
+
+
+
+                - **signature** *(string) --*
+
+                  Signature for verifying the reasoning content.
+
+
+
+
+
+              - **redactedContent** *(bytes) --*
+
+                Redacted reasoning content.
+
+
+
+
+
+
+
+
+
+    :type model: dict
+    :param model:
+
+      The model configuration to use for this invocation. If specified, overrides the harness default.
+
+      .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``bedrockModelConfig``, ``openAiModelConfig``, ``geminiModelConfig``, ``liteLlmModelConfig``.
+
+
+      - **bedrockModelConfig** *(dict) --*
+
+        Configuration for an Amazon Bedrock model.
+
+
+
+
+        - **modelId** *(string) --* **[REQUIRED]**
+
+          The Bedrock model ID.
+
+
+
+
+        - **maxTokens** *(integer) --*
+
+          The maximum number of tokens to allow in the generated response per iteration.
+
+
+
+
+        - **temperature** *(float) --*
+
+          The temperature to set when calling the model.
+
+
+
+
+        - **topP** *(float) --*
+
+          The topP set when calling the model.
+
+
+
+
+        - **apiFormat** *(string) --*
+
+          The API format to use when calling the Bedrock provider.
+
+
+
+
+        - **additionalParams** (:ref:`document<document>`) --
+
+          Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+      - **openAiModelConfig** *(dict) --*
+
+        Configuration for an OpenAI model.
+
+
+
+
+        - **modelId** *(string) --* **[REQUIRED]**
+
+          The OpenAI model ID.
+
+
+
+
+        - **apiKeyArn** *(string) --* **[REQUIRED]**
+
+          The ARN of your OpenAI API key on AgentCore Identity.
+
+
+
+
+        - **maxTokens** *(integer) --*
+
+          The maximum number of tokens to allow in the generated response per iteration.
+
+
+
+
+        - **temperature** *(float) --*
+
+          The temperature to set when calling the model.
+
+
+
+
+        - **topP** *(float) --*
+
+          The topP set when calling the model.
+
+
+
+
+        - **apiFormat** *(string) --*
+
+          The API format to use when calling the OpenAI provider.
+
+
+
+
+        - **additionalParams** (:ref:`document<document>`) --
+
+          Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+      - **geminiModelConfig** *(dict) --*
+
+        Configuration for a Google Gemini model.
+
+
+
+
+        - **modelId** *(string) --* **[REQUIRED]**
+
+          The Gemini model ID.
+
+
+
+
+        - **apiKeyArn** *(string) --* **[REQUIRED]**
+
+          The ARN of your Gemini API key on AgentCore Identity.
+
+
+
+
+        - **maxTokens** *(integer) --*
+
+          The maximum number of tokens to allow in the generated response per iteration.
+
+
+
+
+        - **temperature** *(float) --*
+
+          The temperature to set when calling the model.
+
+
+
+
+        - **topP** *(float) --*
+
+          The topP set when calling the model.
+
+
+
+
+        - **topK** *(integer) --*
+
+          The topK set when calling the model.
+
+
+
+
+        - **additionalParams** (:ref:`document<document>`) --
+
+          Provider-specific parameters passed through to the Gemini model provider unchanged.
+
+
+
+
+
+      - **liteLlmModelConfig** *(dict) --*
+
+        The LiteLLM model configuration for connecting to third-party model providers.
+
+
+
+
+        - **modelId** *(string) --* **[REQUIRED]**
+
+          The LiteLLM model identifier (e.g., "anthropic/claude-3-sonnet").
+
+
+
+
+        - **apiKeyArn** *(string) --*
+
+          The ARN of the API key in AgentCore Identity for authenticating with the model provider.
+
+
+
+
+        - **apiBase** *(string) --*
+
+          The base URL for the model provider's API endpoint.
+
+
+
+
+        - **maxTokens** *(integer) --*
+
+          The maximum number of tokens to allow in the generated response per iteration.
+
+
+
+
+        - **temperature** *(float) --*
+
+          The temperature to set when calling the model.
+
+
+
+
+        - **topP** *(float) --*
+
+          The topP set when calling the model.
+
+
+
+
+        - **additionalParams** (:ref:`document<document>`) --
+
+          Provider-specific parameters passed through to the model provider unchanged.
+
+
+
+
+
+
+    :type systemPrompt: list
+    :param systemPrompt:
+
+      The system prompt to use for this invocation. If specified, overrides the harness default.
+
+
+
+
+      - *(dict) --*
+
+        A content block in the system prompt.
+
+        .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``text``.
+
+
+        - **text** *(string) --*
+
+          The text content of the system prompt block.
+
+
+
+
+
+
+    :type tools: list
+    :param tools:
+
+      The tools available to the agent for this invocation. If specified, overrides the harness default.
+
+
+
+
+      - *(dict) --*
+
+        A tool available to the agent loop.
+
+
+
+
+        - **type** *(string) --* **[REQUIRED]**
+
+          The type of tool.
+
+
+
+
+        - **name** *(string) --*
+
+          Unique name for the tool. If not provided, a name will be inferred or generated.
+
+
+
+
+        - **config** *(dict) --*
+
+          Tool-specific configuration.
+
+          .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``remoteMcp``, ``agentCoreBrowser``, ``agentCoreGateway``, ``inlineFunction``, ``agentCoreCodeInterpreter``.
+
+
+          - **remoteMcp** *(dict) --*
+
+            Configuration for remote MCP server.
+
+
+
+
+            - **url** *(string) --* **[REQUIRED]**
+
+              URL of the MCP endpoint.
+
+
+
+
+            - **headers** *(dict) --*
+
+              Custom headers to include when connecting to the remote MCP server.
+
+
+
+
+              - *(string) --*
+
+                The key of an HTTP header.
+
+
+
+
+                - *(string) --*
+
+                  The value of an HTTP header.
+
+
+
+
+
+
+
+          - **agentCoreBrowser** *(dict) --*
+
+            Configuration for AgentCore Browser.
+
+
+
+
+            - **browserArn** *(string) --*
+
+              If not populated, the built-in Browser ARN is used.
+
+
+
+
+
+          - **agentCoreGateway** *(dict) --*
+
+            Configuration for AgentCore Gateway.
+
+
+
+
+            - **gatewayArn** *(string) --* **[REQUIRED]**
+
+              The ARN of the desired AgentCore Gateway.
+
+
+
+
+            - **outboundAuth** *(dict) --*
+
+              How harness authenticates to this Gateway. Defaults to AWS_IAM (SigV4) if omitted.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``awsIam``, ``none``, ``oauth``.
+
+
+              - **awsIam** *(dict) --*
+
+                SigV4-sign requests using the agent's execution role.
+
+
+
+
+
+              - **none** *(dict) --*
+
+                No authentication.
+
+
+
+
+
+              - **oauth** *(dict) --*
+
+                OAuth 2.0 authentication via AgentCore Identity.
+
+
+
+
+                - **providerArn** *(string) --* **[REQUIRED]**
+
+                  The ARN of the OAuth 2.0 credential provider in AgentCore Identity.
+
+
+
+
+                - **scopes** *(list) --* **[REQUIRED]**
+
+                  The OAuth 2.0 scopes to request when obtaining an access token.
+
+
+
+
+                  - *(string) --*
+
+
+
+                - **customParameters** *(dict) --*
+
+                  Additional custom parameters to include in the OAuth 2.0 token request.
+
+
+
+
+                  - *(string) --*
+
+
+                    - *(string) --*
+
+
+
+
+                - **grantType** *(string) --*
+
+                  The OAuth 2.0 grant type to use for authentication.
+
+
+
+
+                - **defaultReturnUrl** *(string) --*
+
+                  The default return URL for the OAuth 2.0 authorization flow.
+
+
+
+
+
+
+
+          - **inlineFunction** *(dict) --*
+
+            Configuration for an inline function tool.
+
+
+
+
+            - **description** *(string) --* **[REQUIRED]**
+
+              Description of what the tool does, provided to the model.
+
+
+
+
+            - **inputSchema** (:ref:`document<document>`) -- **[REQUIRED]**
+
+              JSON Schema describing the tool's input parameters.
+
+
+
+
+
+          - **agentCoreCodeInterpreter** *(dict) --*
+
+            Configuration for AgentCore Code Interpreter.
+
+
+
+
+            - **codeInterpreterArn** *(string) --*
+
+              If not populated, the built-in Code Interpreter ARN is used.
+
+
+
+
+
+
+
+
+    :type skills: list
+    :param skills:
+
+      The skills available to the agent for this invocation. If specified, overrides the harness default.
+
+
+
+
+      - *(dict) --*
+
+        A skill available to the agent.
+
+        .. note::    This is a Tagged Union structure. Only one of the     following top level keys can be set: ``path``, ``s3``, ``git``, ``awsSkills``.
+
+
+        - **path** *(string) --*
+
+          The filesystem path to the skill definition.
+
+
+
+
+        - **s3** *(dict) --*
+
+          An S3 source containing the skill.
+
+
+
+
+          - **uri** *(string) --* **[REQUIRED]**
+
+            The S3 URI pointing to the skill directory (e.g., s3://bucket/skills/my-skill/).
+
+
+
+
+
+        - **git** *(dict) --*
+
+          A git repository containing the skill.
+
+
+
+
+          - **url** *(string) --* **[REQUIRED]**
+
+            The HTTPS URL of the git repository.
+
+
+
+
+          - **path** *(string) --*
+
+            Subdirectory within the repository containing the skill.
+
+
+
+
+          - **auth** *(dict) --*
+
+            Authentication configuration for private repositories.
+
+
+
+
+            - **credentialArn** *(string) --* **[REQUIRED]**
+
+              The ARN of the credential in AgentCore Identity containing the password or personal access token.
+
+
+
+
+            - **username** *(string) --*
+
+              Username for authentication. Defaults to 'oauth2' if not specified.
+
+
+
+
+
+
+        - **awsSkills** *(dict) --*
+
+          AWS Skills baked into the Harness's underlying Runtime.
+
+
+
+
+          - **paths** *(list) --*
+
+            Optionally filter allowed skills with glob syntax, e.g., ['core-skills/*'].
+
+
+
+
+            - *(string) --*
+
+
+
+
+
+
+    :type allowedTools: list
+    :param allowedTools:
+
+      The tools that the agent is allowed to use for this invocation. If specified, overrides the harness default.
+
+
+
+
+      - *(string) --*
+
+
+
+    :type maxIterations: integer
+    :param maxIterations:
+
+      The maximum number of iterations the agent loop can execute. If specified, overrides the harness default.
+
+
+
+
+    :type maxTokens: integer
+    :param maxTokens:
+
+      The maximum number of tokens the agent can generate per iteration. If specified, overrides the harness default.
+
+
+
+
+    :type timeoutSeconds: integer
+    :param timeoutSeconds:
+
+      The maximum duration in seconds for the agent loop execution. If specified, overrides the harness default.
+
+
+
+
+    :type actorId: string
+    :param actorId:
+
+      The actor ID for memory operations. Overrides the actor ID configured on the harness.
+
+
+
+
+
+    :rtype: dict
+    :returns:
+
+
+      The response of this operation contains an :class:`.EventStream` member. When iterated the :class:`.EventStream` will yield events based on the structure below, where only one of the top level keys will be present for any given event.
+
+      **Response Syntax**
+
+
+      ::
+
+        {
+            'stream': EventStream({
+                'messageStart': {
+                    'role': 'user'|'assistant'
+                },
+                'contentBlockStart': {
+                    'contentBlockIndex': 123,
+                    'start': {
+                        'toolUse': {
+                            'toolUseId': 'string',
+                            'name': 'string',
+                            'type': 'tool_use'|'server_tool_use'|'mcp_tool_use',
+                            'serverName': 'string'
+                        },
+                        'toolResult': {
+                            'toolUseId': 'string',
+                            'status': 'success'|'error'
+                        }
+                    }
+                },
+                'contentBlockDelta': {
+                    'contentBlockIndex': 123,
+                    'delta': {
+                        'text': 'string',
+                        'toolUse': {
+                            'input': 'string'
+                        },
+                        'toolResult': [
+                            {
+                                'text': 'string',
+                                'json': {...}|[...]|123|123.4|'string'|True|None
+                            },
+                        ],
+                        'reasoningContent': {
+                            'text': 'string',
+                            'redactedContent': b'bytes',
+                            'signature': 'string'
+                        },
+                        'toolResultMetadata': {
+                            'metadata': 'string'
+                        }
+                    }
+                },
+                'contentBlockStop': {
+                    'contentBlockIndex': 123
+                },
+                'messageStop': {
+                    'stopReason': 'end_turn'|'tool_use'|'tool_result'|'max_tokens'|'stop_sequence'|'content_filtered'|'malformed_model_output'|'malformed_tool_use'|'interrupted'|'partial_turn'|'model_context_window_exceeded'|'max_iterations_exceeded'|'max_output_tokens_exceeded'|'timeout_exceeded'
+                },
+                'metadata': {
+                    'usage': {
+                        'inputTokens': 123,
+                        'outputTokens': 123,
+                        'totalTokens': 123,
+                        'cacheReadInputTokens': 123,
+                        'cacheWriteInputTokens': 123
+                    },
+                    'metrics': {
+                        'latencyMs': 123
+                    }
+                },
+                'internalServerException': {
+                    'message': 'string'
+                },
+                'validationException': {
+                    'message': 'string',
+                    'reason': 'CannotParse'|'FieldValidationFailed'|'IdempotentParameterMismatchException'|'EventInOtherSession'|'ResourceConflict',
+                    'fieldList': [
+                        {
+                            'name': 'string',
+                            'message': 'string'
+                        },
+                    ]
+                },
+                'runtimeClientError': {
+                    'message': 'string'
+                }
+            })
+        }
+
+      **Response Structure**
+
+
+
+      - *(dict) --*
+
+
+        - **stream** (:class:`.EventStream`) --
+
+          The streaming output from the harness invocation.
+
+
+
+
+          - **messageStart** *(dict) --*
+
+            Indicates the start of a new message from the agent.
+
+
+
+
+            - **role** *(string) --*
+
+              The role of the message sender.
+
+
+
+
+
+          - **contentBlockStart** *(dict) --*
+
+            Indicates the start of a new content block.
+
+
+
+
+            - **contentBlockIndex** *(integer) --*
+
+              The index of the content block within the message.
+
+
+
+
+            - **start** *(dict) --*
+
+              The content block start payload.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``toolUse``, ``toolResult``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **toolUse** *(dict) --*
+
+                Start of a tool use content block.
+
+
+
+
+                - **toolUseId** *(string) --*
+
+                  The unique ID of this tool use.
+
+
+
+
+                - **name** *(string) --*
+
+                  The name of the tool being called.
+
+
+
+
+                - **type** *(string) --*
+
+                  The type of tool use.
+
+
+
+
+                - **serverName** *(string) --*
+
+                  The name of the MCP server providing this tool.
+
+
+
+
+
+              - **toolResult** *(dict) --*
+
+                Start of a tool result content block.
+
+
+
+
+                - **toolUseId** *(string) --*
+
+                  The tool use ID that this result corresponds to.
+
+
+
+
+                - **status** *(string) --*
+
+                  The status of the tool execution.
+
+
+
+
+
+
+
+          - **contentBlockDelta** *(dict) --*
+
+            A delta update to the current content block.
+
+
+
+
+            - **contentBlockIndex** *(integer) --*
+
+              The index of the content block being updated.
+
+
+
+
+            - **delta** *(dict) --*
+
+              The delta payload.
+
+              .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``text``, ``toolUse``, ``toolResult``, ``reasoningContent``, ``toolResultMetadata``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                        'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+              - **text** *(string) --*
+
+                A text delta.
+
+
+
+
+              - **toolUse** *(dict) --*
+
+                A tool use input delta.
+
+
+
+
+                - **input** *(string) --*
+
+                  The partial JSON input for the tool call.
+
+
+
+
+
+              - **toolResult** *(list) --*
+
+                A tool result delta.
+
+
+
+
+                - *(dict) --*
+
+                  A delta update to a tool result content block.
+
+                  .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``text``, ``json``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                                'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                  - **text** *(string) --*
+
+                    A text tool result delta.
+
+
+
+
+                  - **json** (:ref:`document<document>`) --
+
+                    A JSON tool result delta.
+
+
+
+
+
+
+              - **reasoningContent** *(dict) --*
+
+                A reasoning content delta.
+
+                .. note::    This is a Tagged Union structure. Only one of the     following top level keys will be set: ``text``, ``redactedContent``, ``signature``.     If a client receives an unknown member it will     set ``SDK_UNKNOWN_MEMBER`` as the top level key,     which maps to the name or tag of the unknown     member. The structure of ``SDK_UNKNOWN_MEMBER`` is     as follows::
+
+                            'SDK_UNKNOWN_MEMBER': {'name': 'UnknownMemberName'}
+
+
+
+
+
+                - **text** *(string) --*
+
+                  Reasoning text delta.
+
+
+
+
+                - **redactedContent** *(bytes) --*
+
+                  Redacted reasoning content.
+
+
+
+
+                - **signature** *(string) --*
+
+                  Signature for the reasoning content.
+
+
+
+
+
+              - **toolResultMetadata** *(dict) --*
+
+                A tool result metadata delta.
+
+
+
+
+                - **metadata** *(string) --*
+
+                  The partial JSON-string fragment of the tool result metadata.
+
+
+
+
+
+
+
+          - **contentBlockStop** *(dict) --*
+
+            Indicates the end of the current content block.
+
+
+
+
+            - **contentBlockIndex** *(integer) --*
+
+              The index of the content block that ended.
+
+
+
+
+
+          - **messageStop** *(dict) --*
+
+            Indicates the end of the current message.
+
+
+
+
+            - **stopReason** *(string) --*
+
+              The reason the agent stopped generating.
+
+
+
+
+
+          - **metadata** *(dict) --*
+
+            Token usage and latency metrics for the invocation.
+
+
+
+
+            - **usage** *(dict) --*
+
+              Token usage counts.
+
+
+
+
+              - **inputTokens** *(integer) --*
+
+                The number of input tokens consumed.
+
+
+
+
+              - **outputTokens** *(integer) --*
+
+                The number of output tokens generated.
+
+
+
+
+              - **totalTokens** *(integer) --*
+
+                The total number of tokens consumed.
+
+
+
+
+              - **cacheReadInputTokens** *(integer) --*
+
+                The number of input tokens read from cache.
+
+
+
+
+              - **cacheWriteInputTokens** *(integer) --*
+
+                The number of input tokens written to cache.
+
+
+
+
+
+            - **metrics** *(dict) --*
+
+              Latency metrics.
+
+
+
+
+              - **latencyMs** *(integer) --*
+
+                The end-to-end latency of the invocation in milliseconds.
+
+
+
+
+
+
+          - **internalServerException** *(dict) --*
+
+            The exception that occurs when the service encounters an unexpected internal error. This is a temporary condition that will resolve itself with retries. We recommend implementing exponential backoff retry logic in your application.
+
+
+
+
+            - **message** *(string) --*
+
+
+
+          - **validationException** *(dict) --*
+
+            The exception that occurs when the input fails to satisfy the constraints specified by the service. Check the error message for details about which input parameter is invalid and correct your request.
+
+
+
+
+            - **message** *(string) --*
+
+
+            - **reason** *(string) --*
+
+
+            - **fieldList** *(list) --*
+
+
+              - *(dict) --*
+
+                Stores information about a field passed inside a request that resulted in an exception.
+
+
+
+
+                - **name** *(string) --*
+
+                  The name of the field.
+
+
+
+
+                - **message** *(string) --*
+
+                  A message describing why this field failed validation.
+
+
+
+
+
+
+
+          - **runtimeClientError** *(dict) --*
+
+            An error returned by the runtime container during agent execution.
+
+
+
+
+            - **message** *(string) --*
+

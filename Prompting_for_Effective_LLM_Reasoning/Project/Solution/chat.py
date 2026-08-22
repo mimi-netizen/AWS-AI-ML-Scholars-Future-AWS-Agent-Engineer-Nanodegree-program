@@ -28,6 +28,7 @@ def main():
 
     # runtimeSessionId must be at least 33 characters - uuid4 (36 chars) works.
     session_id = str(uuid.uuid4())
+    user_id = str(uuid.uuid4())
     print(f"Session: {session_id}")
     print("Type your message, or 'exit' to quit.\n")
 
@@ -45,6 +46,7 @@ def main():
         response = client.invoke_harness(
             harnessArn=harness_arn,
             runtimeSessionId=session_id,
+            runtimeUserId=user_id,
             messages=messages,
         )
 
