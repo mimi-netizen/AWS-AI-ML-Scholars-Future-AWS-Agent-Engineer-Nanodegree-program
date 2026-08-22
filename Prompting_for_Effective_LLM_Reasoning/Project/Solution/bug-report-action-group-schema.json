@@ -1,0 +1,25 @@
+{
+  "functions": [
+    {
+      "name": "create_bug_report",
+      "description": "Creates a support ticket for a bug reported by a customer on the online shop platform.",
+      "parameters": {
+        "description": {
+          "type": "string",
+          "description": "A clear description of the bug the customer is experiencing.",
+          "required": true
+        },
+        "stepsToReproduce": {
+          "type": "string",
+          "description": "The steps the customer followed that led to the bug, in order.",
+          "required": false
+        },
+        "environment": {
+          "type": "string",
+          "description": "The customer's environment where the bug occurred, e.g. browser, operating system, or device.",
+          "required": false
+        }
+      }
+    }
+  ]
+}

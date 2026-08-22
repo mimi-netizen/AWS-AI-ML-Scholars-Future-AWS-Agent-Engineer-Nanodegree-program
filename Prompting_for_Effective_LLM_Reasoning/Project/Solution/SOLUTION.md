@@ -91,31 +91,69 @@ aws cloudformation deploy \
     --region us-east-1
 ```
 
-**Result:** _(paste stack outputs / confirm "Successfully created/updated stack")_
+**Result:** ![Dark terminal showing a successful AWS CloudFormation deployment. The terminal displays the command deploying cloudformation-tool.yaml with stack name bug-report-tool-stack, CAPABILITY_NAMED_IAM, and region us-east-1, followed by the message Successfully created/updated stack - bug-report-tool-stack. The surrounding developer workspace is minimal, with a successful and instructional tone.](image-7.png)
 
 Stack outputs (`BugReportsTableArn`, `LambdaFunctionArn`, `LambdaExecutionRoleArn`):
+
 ```
-<paste here>
+BugReportsTableArn      = arn:aws:dynamodb:us-east-1:728319584873:table/BugReports-579769a0
+LambdaFunctionArn       = arn:aws:lambda:us-east-1:728319584873:function:create-bug-report-579769a0
+LambdaExecutionRoleArn  = arn:aws:iam::728319584873:role/create-bug-report-role-579769a0
 ```
 
-![Stack creation success](screenshots/01-stack-created.png)
+
+![VS Code terminal displaying the AWS CloudFormation stack outputs for bug-report-tool-stack. The command aws cloudformation describe-stacks queries the stack in us-east-1 and formats the results as a table. The table lists BugReportsTableArn with value arn:aws:dynamodb:us-east-1:728319584873:table/BugReports-579769a0, LambdaExecutionRoleArn with value arn:aws:iam::728319584873:role/create-bug-report-role-579769a0, and LambdaFunctionArn with value arn:aws:lambda:us-east-1:728319584873:function:create-bug-report-579769a0. A shell prompt is visible below the successful output in a dark, technical development environment.](image-8.png)
 
 ### 1.2 Test Lambda function in isolation
 
 Test event used: sample JSON from Project-Instructions.md (checkout crash example).
 
-![Lambda test event configuration](screenshots/02-lambda-test-event.png)
+![AWS Lambda Functions console showing the deployed create-bug-report-579769a0 function](image-10.png)
 
-![Lambda test result](screenshots/03-lambda-test-result.png)
+![AWS Lambda console showing the deployed create-bug-report-579769a0 function in the United States N Virginia region. The Function overview displays the Lambda function, its ARN, the bug-report-tool-stack application, and controls for throttling, copying the ARN, adding a trigger, and adding a destination. The dark AWS management console has a technical, successful tone.](image-11.png)
 
-Ticket ID returned: `<paste here>`
+![AWS Lambda Test event panel for create-bug-report-579769a0. The main focus is the test event configuration form in the AWS Lambda console. The panel shows a dark interface with a blue highlighted Create new event tab, a Synchronnous invocation type selected, event name field with the placeholder MyEventName, and a Private event sharing setting. At the top of the window, the Lambda function name create-bug-report-579769a0 is visible in the header, and a dark AWS navigation bar and browser chrome frame the page. The overall tone is technical and successful, with a clean development environment. Text visible in the image includes AWS Lambda, create-bug-report-579769a0, Test event, Invoke your function without saving an event, Create new event, Edit saved event, Synchronous, Event name, MyEventName, Private, and CloudShell, Agent Toolkit for AWS, Feedback.](image-12.png)
+
+![AWS Lambda Test tab showing a successful invocation of create-bug-report-579769a0. The dark AWS console displays Executing function: succeeded and a Response panel with JSON showing actionGroup bug-report-actions, function create_bug_report, ticketId 5f81bbeb-2fa4-4f4c-b8fb-9b080e86ff16, and status OPEN. The Summary section shows Function version $LATEST, execution time 2 seconds ago, and a request ID. The AWS region is United States N Virginia, and the technical interface has a successful tone.](image-13.png)
+
+![AWS CloudWatch Log Management showing the Lambda function log group /aws/lambda/create-bug-report-579769a0. The dark AWS console displays log group details including the ARN arn:aws:logs:us-east-1:728319584873:log-group:/aws/lambda/create-bug-report-579769a0:*, Standard log class, retention Never expire, and region United States N Virginia. Navigation links include CloudWatch, Log management, Ingestion, Dashboards, Alarms, AI Operations, GenAI Observability, Application Signals APM, Infrastructure Monitoring, and Logs. The page is a technical monitoring environment with a clear, successful deployment-focused tone.](image-14.png)
+
+Ticket ID returned: `5f81bbeb-2fa4-4f4c-b8fb-9b080e86ff16`
 
 ### 1.3 Verify DynamoDB record
 
-![DynamoDB BugReports table item](screenshots/04-dynamodb-record.png)
+![Amazon DynamoDB Tables page in the AWS Management Console showing one active table, BugReports-579769a0. The table uses ticketId as its partition key, has no sort key or indexes, and has deletion protection turned off. The dark console interface is open in the United States N Virginia region, with DynamoDB navigation on the left and a technical, successful deployment-verification tone.](image-15.png)
 
-### Notes / issues encountered
-- _(e.g. AccessDeniedException, ResourceNotFoundException, region mismatches)_
+![Amazon DynamoDB table settings page for BugReports-579769a0 in the AWS Management Console. The table is Active and has ticketId as its String partition key, no sort key, on-demand capacity, zero items, and zero bytes. Point-in-time recovery and resource-based policy are not active, and there are no active alarms. The page displays the table ARN arn:aws:dynamodb:us-east-1:728319584873:table/BugReports-579769a0. Visible navigation includes DynamoDB, Tables, Settings, Indexes, Monitor, Global tables, Backups, Exports and streams, Permissions, Actions, and Explore table items. The dark console provides a technical table-verification environment.](image-16.png)
+
+![Amazon DynamoDB console showing the BugReports-579769a0 table with a Get live item count dialog open. The dialog reports an item count of 1, scan status Complete, and last updated August 22, 2026 11:46:02, with Scan again and Cancel buttons. It warns that scanning can consume additional read capacity and is not recommended for very large or critical production tables. Behind the dialog, the table status is Active and the Amazon Resource Name is arn:aws:dynamodb:us-east-1:728319584873:table/BugReports-579769a0. The dark AWS Management Console is open in the United States N Virginia region, creating a technical and successful verification environment.](image-17.png)
+
+![Amazon DynamoDB Explore items page displaying one returned item from the BugReports-579769a0 table. The AWS Management Console shows a completed scan with Items returned: 1, Items scanned: 1, Efficiency: 100%, and RCUs consumed: 2. The results table includes ticketId, createdAt, description, environment, status, and stepsToReproduce columns; the single record begins with ticket ID 5f81bbeb-2fa4-4f4c-..., has status OPEN, and contains checkout-related bug details. The dark AWS console is open in the United States N Virginia region, providing a technical and successful verification environment.](image-18.png)
+
+![Amazon DynamoDB Edit item page for the BugReports-579769a0 table, showing the single bug report record in a dark AWS Management Console. The form displays ticketId 5f81bbeb-2fa4-4f4c-b8fb-9b080e86ff16, createdAt 2026-08-22T08:39:54.856325+00:00, description The checkout page crashes when I click the Pay button, environment Chrome 120 on macOS Sonoma, status OPEN, and stepsToReproduce 1. Add an item to the cart. 2. Go to checkout. 3. Click Pay. Visible interface text includes Edit item, Attributes, Attribute name, Value, Type, Remove, Add new attribute, Form, JSON view, DynamoDB, Explore items: BugReports-579769a0, and CloudShell. The technical interface presents a clear, successful record-verification environment.](image-19.png)
+
+```
+{
+  "ticketId": {
+    "S": "5f81bbeb-2fa4-4f4c-b8fb-9b080e86ff16"
+  },
+  "createdAt": {
+    "S": "2026-08-22T08:39:54.856325+00:00"
+  },
+  "description": {
+    "S": "The checkout page crashes when I click the Pay button"
+  },
+  "environment": {
+    "S": "Chrome 120 on macOS Sonoma"
+  },
+  "status": {
+    "S": "OPEN"
+  },
+  "stepsToReproduce": {
+    "S": "1. Add an item to the cart. 2. Go to checkout. 3. Click Pay."
+  }
+}
+```
 
 ---
 
