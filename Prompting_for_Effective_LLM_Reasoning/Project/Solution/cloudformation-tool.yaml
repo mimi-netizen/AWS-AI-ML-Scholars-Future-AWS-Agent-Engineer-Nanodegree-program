@@ -1,58 +1,50 @@
-# Auto-generated from cloudformation-tool-base.yaml — do not edit directly.
-# To regenerate: edit cloudformation-tool-base.yaml and create_bug_report.py,
-# then run:
-#   python generate_cloudformation_tool.py
-
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Bug report tool - DynamoDB table, Lambda function, and IAM role
+Description: >
+  Bug report tool for the AgentCore-based chatbot - DynamoDB table, Lambda
+  function, and the IAM roles used by the Lambda, the AgentCore Gateway,
+  and the AgentCore managed harness.
 
 Resources:
 
   BugReportsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub
-        - BugReports-${Suffix}
-        - Suffix: !Select [ 0, !Split [ "-", !Select [ 2, !Split [ "/", !Ref "AWS::StackId" ] ] ] ]
+      TableName: bug-report-tool-stack-bug-reports
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
-      - AttributeName: ticketId
-        AttributeType: S
+        - AttributeName: ticketId
+          AttributeType: S
       KeySchema:
-      - AttributeName: ticketId
-        KeyType: HASH
+        - AttributeName: ticketId
+          KeyType: HASH
 
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub
-        - create-bug-report-role-${Suffix}
-        - Suffix: !Select [ 0, !Split [ "-", !Select [ 2, !Split [ "/", !Ref "AWS::StackId" ] ] ] ]
+      RoleName: bug-report-tool-stack-lambda-role
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            Service: lambda.amazonaws.com
-          Action: sts:AssumeRole
-      ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      Policies:
-      - PolicyName: DynamoDBPutItem
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
           - Effect: Allow
-            Action: dynamodb:PutItem
-            Resource: !GetAtt BugReportsTable.Arn
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DynamoDBPutItem
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: dynamodb:PutItem
+                Resource: !GetAtt BugReportsTable.Arn
 
   CreateBugReportFunction:
     Type: AWS::Lambda::Function
     DependsOn: LambdaExecutionRole
     Properties:
-      FunctionName: !Sub
-        - create-bug-report-${Suffix}
-        - Suffix: !Select [ 0, !Split [ "-", !Select [ 2, !Split [ "/", !Ref "AWS::StackId" ] ] ] ]
+      FunctionName: bug-report-tool-stack-create-bug-report
       Runtime: python3.12
       Handler: index.lambda_handler
       Role: !GetAtt LambdaExecutionRole.Arn
@@ -69,27 +61,21 @@ Resources:
 
           table = boto3.resource("dynamodb").Table(os.environ["TABLE_NAME"])
 
-          REQUIRED_FIELDS = ("description", "stepsToReproduce", "environment")
-
-          def lambda_handler(event, _):
+          def lambda_handler(event, _context):
+              # The AgentCore Gateway sends tool arguments directly as the
+              # Lambda event - a plain JSON object, no messageVersion/
+              # parameters wrapper like Agents Classic used.
               print("EVENT:", json.dumps(event, indent=2, default=str))
 
-              if event.get("messageVersion") != "1.0" or event.get("function") != "create_bug_report":
-                  return _resp(event, {"error": "unsupported"})
+              description = (event.get("description") or "").strip()
+              steps = (event.get("stepsToReproduce") or "").strip()
+              environment = (event.get("environment") or "").strip()
 
-              params = event.get("parameters") or []
-              body = {
-                  p.get("name"): p.get("value")
-                  for p in params
-                  if isinstance(p, dict) and p.get("name") is not None
-              }
-
-              description = (body.get("description") or "").strip()
-              steps = (body.get("stepsToReproduce") or "").strip()
-              environment = (body.get("environment") or "").strip()
-
-              if not description:
-                  return _resp(event, {"error": "missing", "field": "description"})
+              if not description or not steps or not environment:
+                  return {
+                      "error": "missing_field",
+                      "detail": "description, stepsToReproduce, and environment are all required"
+                  }
 
               ticket_id = str(uuid.uuid4())
               item = {
@@ -103,36 +89,68 @@ Resources:
 
               table.put_item(Item=item)
 
-              return _resp(event, {"ticketId": ticket_id, "status": "OPEN"})
+              return {"ticketId": ticket_id, "status": "OPEN"}
 
-
-          def _resp(event, obj):
-              return {
-                  "messageVersion": "1.0",
-                  "response": {
-                      "actionGroup": event.get("actionGroup"),
-                      "function": event.get("function"),
-                      "functionResponse": {
-                          "responseBody": {
-                              "TEXT": {
-                                  "body": json.dumps(obj)
-                              }
-                          }
-                      },
-                  },
-              }
-
-  BedrockInvokePermission:
-    Type: AWS::Lambda::Permission
+  # Assumed by the AgentCore Gateway so it can invoke the Lambda on the
+  # model's behalf when the create_bug_report tool is called.
+  GatewayRole:
+    Type: AWS::IAM::Role
     Properties:
-      FunctionName: !GetAtt CreateBugReportFunction.Arn
-      Action: lambda:InvokeFunction
-      Principal: bedrock.amazonaws.com
+      RoleName: bug-report-tool-stack-gateway-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: bedrock-agentcore.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: InvokeLambdaTarget
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !GetAtt CreateBugReportFunction.Arn
+
+  # Assumed by the AgentCore managed harness so it can call Bedrock
+  # models and invoke the gateway (and therefore the Lambda tool).
+  HarnessRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: bug-report-tool-stack-harness-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: bedrock-agentcore.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: HarnessPermissions
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - bedrock:InvokeModel
+                  - bedrock:InvokeModelWithResponseStream
+                Resource: arn:aws:bedrock:us-east-1::foundation-model/us.amazon.nova-pro-v1:0
+              - Effect: Allow
+                Action:
+                  - bedrock-agentcore:InvokeGateway
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
 
 Outputs:
-  BugReportsTableArn:
-    Description: ARN of the BugReports DynamoDB table
-    Value: !GetAtt BugReportsTable.Arn
+  BugReportsTableName:
+    Description: Name of the BugReports DynamoDB table
+    Value: !Ref BugReportsTable
 
   LambdaFunctionArn:
     Description: ARN of the create-bug-report Lambda function
@@ -141,3 +159,11 @@ Outputs:
   LambdaExecutionRoleArn:
     Description: ARN of the Lambda execution IAM role
     Value: !GetAtt LambdaExecutionRole.Arn
+
+  GatewayRoleArn:
+    Description: ARN of the IAM role the AgentCore Gateway assumes to invoke the Lambda
+    Value: !GetAtt GatewayRole.Arn
+
+  HarnessRoleArn:
+    Description: ARN of the IAM role the AgentCore managed harness assumes
+    Value: !GetAtt HarnessRole.Arn

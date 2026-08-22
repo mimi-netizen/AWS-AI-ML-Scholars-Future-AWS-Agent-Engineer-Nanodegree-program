@@ -295,50 +295,135 @@ In the response, check the node name shown above the output — it should say Fl
 
 
 
-### 2.2 Bug Report path (Agent node)
+### 2.2 Bug Report path (Agent node) — ⚠️ SUPERSEDED, see "Revised Step 2" below
 
-Action group / Lambda linkage:
+![A dark VS Code terminal shows an AWS CLI attempt to create a Bedrock agent named bug-report-agent in the us-east-1 region, using foundation model amazon.nova-pro-v1:0 and an agent resource role ARN. The command fails with an AccessDeniedException stating that Bedrock Agents is in Maintenance Mode and new agent creation is unavailable for accounts without prior service usage. The terminal displays the AWS documentation URL for more information and returns to the shell prompt, conveying a technical setup error.](image-47.png)
 
 
-Data collected: description, stepsToReproduce, environment
-- "User input" advanced setting enabled: Yes/No
+Action group / Lambda linkage: [work stopped here]
 
-Test — clear bug report (single turn):
+While building this section, hit a hard blocker: Bedrock Agents Classic is in Maintenance Mode and blocks new agent creation for accounts without prior service usage. Screenshot and full incident log below.
 
-![Amazon Bedrock flow test showing a clear bug report submitted through the customer support flow and its resulting response. The dark workflow console presents the test interaction in a focused technical environment.](screenshots/09-test-bug-clear.png)
+Console error: "Bedrock Agents is in Maintenance Mode. New agent creation is not available for accounts without prior service usage."
 
-Test — vague bug report requiring follow-up questions:
+![Amazon Bedrock Agents Classic console in a dark AWS web interface showing zero agents and a prominent red maintenance warning. The warning reads Bedrock Agents is in Maintenance Mode. New agent creation is not available for accounts without prior service usage and links to AWS documentation. A blue notice says Agents Classic will no longer be open to new customers starting July 30, 2026 and recommends Amazon Bedrock AgentCore. The page also offers a Try AgentCore button and displays an empty agents list with a Create agent button, conveying a technical setup blocker.](image-48.png)
 
-![Amazon Bedrock flow test showing a vague bug report that triggers follow-up questions from the customer support flow. The dark console displays the conversational test in a technical workflow environment.](screenshots/10-test-bug-followup.png)
+Confirmed via CLI as well (not just a console-only restriction):
+```
+aws bedrock-agent create-agent --agent-name bug-report-agent --agent-resource-role-arn <role-arn> --foundation-model amazon.nova-pro-v1:0 --region us-east-1
+```
+Returned: `AccessDeniedException: Bedrock Agents is in Maintenance Mode. New agent creation is not available for accounts without prior service usage.`
 
-DynamoDB record created via the Flow (not the isolated Lambda test):
+Per AWS: Bedrock Agents Classic (launched Nov 2023) closed to new customers as of July 30, 2026. Successor is Amazon Bedrock AgentCore.
 
-![Amazon DynamoDB record created by the customer support flow after a bug report test. The database console displays stored bug details including the report description, reproduction steps, and environment in a structured technical interface.](screenshots/11-dynamodb-flow-record.png)
-
-### 2.3 Platform Question path
-
-FAQ embedding approach:
-
-![Amazon Bedrock flow builder showing the FAQ prompt node template used for platform questions. The prompt configuration appears on a dark technical workflow canvas.](screenshots/12-faq-prompt-node.png)
-
-Test — question covered by FAQ:
-
-![Amazon Bedrock flow test showing a platform question answered by the FAQ path because the question is covered by the configured FAQ content. The dark console displays the completed test in a technical workflow environment.](screenshots/13-test-faq-covered.png)
-
-Test — question NOT covered by FAQ (should redirect to phone support):
-
-![Amazon Bedrock flow test showing a platform question not covered by the FAQ and redirected to phone support. The dark console displays the completed routing result in a technical workflow environment.](screenshots/14-test-faq-uncovered.png)
-
-### 2.4 Other Requests path
-
-Test — generic/unrelated request:
-
-![Amazon Bedrock flow test showing a generic or unrelated request routed through the Other Requests path. The dark console displays the completed classification and response in a focused technical workflow environment.](screenshots/15-test-other.png)
-
-### Notes / issues encountered
-- _(misrouting cases, prompt iterations, output node wiring gotchas)_
+Confirmed AgentCore is the expected approach for this project going forward.
 
 ---
+
+## Revised Step 2 — Pivoting to AgentCore Managed Harness
+
+This project originally called for a Bedrock Flow with a classifier prompt, Condition node routing, and a Bedrock Agent node for the bug-report path (see 2.1 and 2.2 above). After hitting the Agents Classic maintenance-mode block, the architecture changes as follows:
+
+- **No Bedrock Flow.** Routing between bug reports, platform questions, and other requests now lives entirely inside a single system prompt (`system_prompt.txt`), not a Flow with Condition nodes.
+- **No Agent node.** The bug-report path is handled by the AgentCore managed harness directly, with tool access via an AgentCore Gateway wrapping the existing `create_bug_report` Lambda.
+- **New required files:** `system_prompt.txt`, `setup_gateway.py`, `create_harness.py`, `chat.py`, `harness-tests.json`, `cleanup_agentcore.py`.
+- **Updated `cloudformation-tool.yaml`:** fixed resource names (`bug-report-tool-stack-*`) plus new IAM roles for the Gateway and the Harness, since the original suffix-named template had neither.
+
+The classifier prompt design and testing discipline from 2.1 (exact-match output, isolate-before-integrate) carry over conceptually into how the new system prompt's routing instructions are written and tested — see below.
+
+### 2.2.1 Redeploy the tool stack
+
+1. **Delete the old stack first.** The new template uses fixed resource names instead of the old suffix-based ones.
+
+```bash
+aws cloudformation delete-stack --stack-name bug-report-tool-stack --region us-east-1
+```
+![VS Code integrated terminal showing the AWS CloudFormation command aws cloudformation delete-stack --stack-name bug-report-tool-stack --region us-east-1. The command has completed and the shell prompt has returned without an error message. The terminal is in a dark-themed coding workspace, with the project directory and active virtual environment visible in the prompt.](image-49.png)
+
+Wait for it to finish:
+```bash
+aws cloudformation wait stack-delete-complete --stack-name bug-report-tool-stack --region us-east-1
+```
+(This may take a minute or two — the command just blocks until done, no output until it returns.)
+
+![VS Code integrated terminal showing the completed AWS CloudFormation wait command, aws cloudformation wait stack-delete-complete --stack-name bug-report-tool-stack --region us-east-1. The shell prompt has returned with no error output in the dark-themed terminal, indicating that stack deletion finished.](image-50.png)
+
+2. **Move the new template into my project folder**, replacing the old `cloudformation-tool.yaml` in my `starter/`.
+
+3. **Deploy the new template:**
+```bash
+aws cloudformation deploy \
+  --template-file cloudformation-tool.yaml \
+  --stack-name bug-report-tool-stack \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region us-east-1
+```
+![VS Code integrated terminal showing the AWS CloudFormation deployment command completing successfully. The terminal displays aws cloudformation deploy with template-file cloudformation-tool.yaml, stack-name bug-report-tool-stack, capabilities CAPABILITY_NAMED_IAM, and region us-east-1, followed by Waiting for changeset to be created, Waiting for stack create/update to complete, and Successfully created/updated stack - bug-report-tool-stack. The dark-themed terminal is open in the project directory with the virtual environment active, and the returned shell prompt indicates a successful, error-free deployment.](image-51.png)
+![AWS Lambda Functions page showing one deployed function named bug-report-tool-stack-create-bug-report. The dark-themed AWS Console displays the Functions list with Python 3.12, Zip package type, Standard type, and the region selector set to United States N. Virginia.](image-52.png)
+
+4. **Get the new outputs** — this time we'll see four ARNs instead of three (Lambda, Lambda role, Gateway role, Harness role), plus the DynamoDB table name is now fixed, not suffixed:
+```bash
+aws cloudformation describe-stacks \
+  --stack-name bug-report-tool-stack \
+  --query 'Stacks[0].Outputs' \
+  --output table \
+  --region us-east-1
+```
+
+![VS Code integrated terminal in a dark-themed window showing the AWS CloudFormation describe-stacks command for bug-report-tool-stack in us-east-1. The command queries Stacks[0].Outputs and displays a table with five outputs: LambdaExecutionRoleArn, LambdaFunctionArn, GatewayRoleArn, HarnessRoleArn, and BugReportsTableName. The visible descriptions identify the Lambda execution role, create-bug-report Lambda function, AgentCore Gateway role, AgentCore managed harness role, and BugReports DynamoDB table; the table value begins bug-report-tool-stack-bug-reports. The shell prompt has returned in the Solution project directory, indicating the command completed successfully.](image-53.png)
+
+![AWS Lambda console Code source view for the bug-report-tool-stack-create-bug-report function. The dark-themed browser displays the index.py file, with visible Python code importing json, os, uuid, datetime and boto3, creating a DynamoDB table resource from the TABLE_NAME environment variable, and defining a lambda_handler function. Comments explain that AgentCore Gateway sends tool arguments directly as a plain JSON object. The left sidebar shows the function explorer, Deploy and Test buttons, and an option to create a test event; the AWS navigation bar and Windows taskbar are visible around the focused development workspace.](image-54.png)
+
+
+### 2.2.2 Test the Lambda in isolation (new unwrapped event format)
+
+The AgentCore Gateway sends tool arguments directly as the Lambda event — a plain JSON object, no messageVersion/parameters wrapper like Agents Classic used. The Lambda code was updated accordingly, so it needs to be re-tested with the new event shape before moving on.
+
+Steps:
+1. Region check first — confirm the console still reads US East (N. Virginia).
+2. Lambda console → search **bug-report-tool-stack-create-bug-report** → open it.
+3. Click the **Test** tab.
+
+![AWS Lambda Test event page for the bug-report-tool-stack-create-bug-report function. The dark-themed AWS Console shows the Test event panel with Create new event selected, Synchronous invocation selected, an empty Event name field displaying MyEventName, and Private event sharing selected. The page includes CloudWatch Logs Live Tail, Save, and Test buttons, with the Lambda breadcrumb and function name at the top and AWS navigation and footer controls surrounding the focused configuration form.](image-55.png)
+
+4. Click **Create new event** (or "New event").
+5. Name it, e.g. `bug-report-test-agentcore`.
+6. Paste the event JSON (no wrapper this time):
+
+```json
+{
+    "description": "The checkout page crashes when I click the Pay button",
+    "stepsToReproduce": "1. Add an item to the cart. 2. Go to checkout. 3. Click Pay.",
+    "environment": "Chrome 120 on macOS Sonoma"
+}
+```
+
+7. Click **Save**, then click **Test**.
+8. Confirm the response is a clean, unwrapped JSON object — no messageVersion/response envelope this time:
+
+```json
+{
+  "ticketId": "9572f7c0-5f12-410b-8ba8-6f04eae8a774",
+  "status": "OPEN"
+}
+```
+
+![AWS Lambda test results showing a successful execution of the bug-report-tool-stack-create-bug-report function. The dark AWS Console displays a green Executing function: succeeded status and a Response panel containing JSON with ticketId 9572f7c0-5f12-410b-8ba8-6f04eae8a774 and status OPEN. Execution details show function version LATEST, duration 295.46 ms, billed duration 797 ms, and 128 MB configured with 94 MB used. The surrounding Lambda interface includes navigation, logs, Format JSON, CloudShell, Agent Toolkit for AWS, and AWS footer controls.](image-56.png)
+
+### 2.2.3 Verify the DynamoDB record
+
+1. DynamoDB console → Tables → **bug-report-tool-stack-bug-reports** → **Explore table items**.
+
+![AWS Management Console DynamoDB Tables page with the bug-report-tool-stack-bug-reports table selected in the left navigation. The main panel shows the dark blue AWS interface with the heading DynamoDB, the tables list, and a highlighted table row for bug-report-tool-stack-bug-reports with Status Active, Partition key ticketId, and the table name in blue. Top navigation includes Search, Actions, Delete, and Create table controls, and the footer bar includes CloudShell and Agent Toolkit for AWS. The overall tone is professional and functional. Text visible includes DynamoDB, Tables (1), bug-report-tool-stack-bug-reports, Active, ticketId, Actions, Delete, and Create table.](image-57.png)
+
+2. Confirm an item exists with `ticketId` matching the value returned by the Lambda test above.
+
+![AWS DynamoDB console showing the bug-report-tool-stack-bug-reports table details page. The left sidebar lists one table named bug-report-tool-stack-bug-reports with Active status and a partition key of ticketId. In the main panel, the heading General information appears with Item count 0, Point-in-time recovery Off, and a blue Get live item count button near the upper right. The interface is dark blue and professional, with text visible including DynamoDB, Tables, bug-report-tool-stack-bug-reports, General information, Item count, and Get live item count.](image-58.png)
+
+3. If the item count shows 0 immediately after the test, use **Get live item count** to force a fresh scan rather than trusting the cached count (this happened before — it was a display lag, not a real failure).
+
+![AWS DynamoDB console showing a Get live item count dialog for the bug-report-tool-stack-bug-reports table. The dialog explains that choosing Start scan performs a DynamoDB scan and may consume additional read capacity units, with a yellow warning that the action is not recommended for very large or critical-production tables. The results show Item count 1, Scan status Complete, and Last updated August 22, 2026 17:03:03. The dialog has Scan again and Cancel buttons. Behind it, the dark AWS console shows the selected table, the Explore table items button, and table status Active.](image-59.png)
+
 
 ## Step 3: Testing and Evaluation
 
